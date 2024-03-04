@@ -1,11 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-function MenuCard({name, price, image}) {
+function MenuCard({menu_id, name, price, image}) {
     return (
         <MenuCardStyled>
-            <img src={"/image/menu/" + image} alt={image} />
-            <p className="card-name">{name}</p>
+            <Link to={"/productDetail/" + menu_id}>
+                <img src={"/image/menu/" + image} alt={image} />
+                <p className="card-name">{name}</p>
+            </Link>
             <p className="card-price">￦{price}</p>
         </MenuCardStyled>
     )

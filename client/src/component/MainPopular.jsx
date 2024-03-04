@@ -9,9 +9,8 @@ function MainPopular() {
     const [popularlist, setPopularlist] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/serverMain/popular")
+        axios.get("http://localhost:8080/clientMain/popular")
         .then(({data}) => {
-            console.log(data);
             setPopularlist(data);
         })
         .catch((err) => {
@@ -27,7 +26,7 @@ function MainPopular() {
             <MainpopularComp>
                 {
                     popularlist.map((item, index) => (
-                        <MenuCard name={item.name} price={item.price} image={item.image} />
+                        <MenuCard menu_id={item.menu_id} name={item.name} price={item.price} image={item.image} />
                     ))
                 }
             </MainpopularComp>

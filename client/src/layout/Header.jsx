@@ -38,15 +38,15 @@ function Header() {
         </div>
     </HeadBox>
     <Menu>
-        <Link to="/product/feed">필드게인 수제사료</Link>
-        <Link to="/product/snack">신선한 수제간식</Link>
-        <Link to="/product/gum">칠겅칠겅 천연껌</Link>
-        <Link to="/product/softfood">부드러운 영양식</Link>
-        <Link to="/product/cookie">핸드메이드 쿠키</Link>
-        <Link to="/product/bakery">케이크&베이커리</Link>
-        <Link to="/product/powder">천연 파우더류</Link>
-        <Link to="/product/premium">프리미엄 유산균</Link>
-        <Link to="/product/catsnack">고양이 수제간식</Link>
+        <Link to="/division/feed">필드게인 수제사료</Link>
+        <Link to="/division/snack">신선한 수제간식</Link>
+        <Link to="/division/gum">칠겅칠겅 천연껌</Link>
+        <Link to="/division/softfood">부드러운 영양식</Link>
+        <Link to="/division/cookie">핸드메이드 쿠키</Link>
+        <Link to="/division/bakery">케이크&베이커리</Link>
+        <Link to="/division/powder">천연 파우더류</Link>
+        <Link to="/division/premium">프리미엄 유산균</Link>
+        <Link to="/division/catsnack">고양이 수제간식</Link>
     </Menu>
     <div className="h-[240px]"></div>
     </>

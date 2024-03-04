@@ -11,13 +11,19 @@ dotenv.config();
 const app = express();
 const conn = require("./config/mysql_config");
 
-const serverMain = require("./routes/serverMain")
-const product = require("./routes/product");
+// server
+const serverMain = require("./routes/serverMain");
+const serverMenu = require("./routes/serverMenu");
+
+// client
+const clientMain = require("./routes/clientMain")
+const clientProduct = require("./routes/clientProduct");
+
 
 app.set("port", 8080);
 app.set("view engine", "html");
 
-// app.use("/", express.static(path.join(__dirname, "public")));
+app.use("/", express.static(path.join(__dirname, "public")));
 
 nunjucks.configure("views", {
     express: app,
@@ -30,8 +36,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cors());
 
-app.use("/serverMain", serverMain);
-app.use("/product", product);
+app.use("/", serverMain);
+app.use("/serverMenu", serverMenu);
+
+app.use("/clientMain", clientMain);
+app.use("/clientProduct", clientProduct);
+
 
 app.get("/main/mainBest", (req, res) => {
     console.log("app.get('/main/mainBest')");

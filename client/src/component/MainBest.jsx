@@ -11,7 +11,6 @@ function MainBest() {
     useEffect(() => {
         axios.get("http://localhost:8080/main/mainBest")
         .then(({data}) => {
-            console.log(data);
             setMainBestData(data);
         })
         .catch((err) => {
@@ -27,7 +26,7 @@ function MainBest() {
             <MainBestComp>
                 {
                     mainBestData.map((item, index) => (
-                        <MenuCard name={item.name} price={item.price} image={item.image} />
+                        <MenuCard menu_id={item.menu_id} name={item.name} price={item.price} image={item.image} />
                     ))
                 }
             </MainBestComp>

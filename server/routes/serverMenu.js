@@ -49,7 +49,7 @@ router.post("/addMenu", (req, res) => {
 router.post("/edit", (req, res) => {
     console.log("router.post('/serverMenu/edit')");
 
-    const update_query = `update menu set division="${req.body.division}", name="${req.body.name}", price=${req.body.price}, total_sale=${req.body.total_sale}, image="${req.body.image}" where menu_id=${req.body.menu_id}`;
+    const update_query = `update menu set division="${req.body.division}", name="${req.body.name}", price=${req.body.price}, total_sale=${req.body.total_sale}, image="${req.body.image}", likey=${req.body.likey} where menu_id=${req.body.menu_id}`;
     conn.query(update_query, (err, update_result, fields) => {
         if(err){
             console.error(err);

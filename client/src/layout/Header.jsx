@@ -33,7 +33,7 @@ function Header() {
         </div>
         <div className="header-mid">
             <Link to="/">
-                <img src="/image/header-image.jpg" alt="header-image"></img>
+                <img src="/image/header-image.png" alt="header-image" className="w-[400px]"></img>
             </Link>
         </div>
     </HeadBox>
@@ -46,7 +46,8 @@ function Header() {
         <Link to="/division/bakery">케이크&베이커리</Link>
         <Link to="/division/powder">천연 파우더류</Link>
         <Link to="/division/premium">프리미엄 유산균</Link>
-        <Link to="/division/catsnack">고양이 수제간식</Link>
+        {/* <Link to="/productDetail/">프리미엄 유산균</Link> */}
+        {/* <Link to="/division/catsnack">고양이 수제간식</Link> */}
     </Menu>
     <div className="h-[240px]"></div>
     </>
@@ -59,6 +60,7 @@ const HeadBox = styled.div`
     top: 0px;
     left: 0px;
     background-color: white;
+    z-index: 100;
 
     width: 100%;
     height: 200px;
@@ -110,10 +112,12 @@ const Menu = styled.div`
     min-width: 1150px;
     top: 200px;
     height: 40px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px solid #cccccc;
+    z-index: 100;
 
     a{
         font-size: 13px;
@@ -124,6 +128,7 @@ const Menu = styled.div`
 
     a:hover{
         color: black;
+        transition: 0.4s;
     }
 `
 

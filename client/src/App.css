@@ -3,6 +3,10 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+:root{
+    --price-red: #ff6699;
+}
+
 a{
     text-decoration: none;
 }
@@ -10,3 +14,10 @@ a{
 body{
     font-family: 'Noto Sans KR', sans-serif;
 }
+
+.M-text-aaaaaa{ color: #aaaaaa; }
+.M-text-888888{ color: #888888; }
+.M-text-333333{ color: #333333; }
+.M-text-444444{ color: #444444; }
+
+.M-text-gray{ color: gray; }

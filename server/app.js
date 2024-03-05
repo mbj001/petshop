@@ -45,7 +45,7 @@ app.use("/clientProduct", clientProduct);
 
 app.get("/main/mainBest", (req, res) => {
     console.log("app.get('/main/mainBest')");
-    const select_menu_query = "select * from menu order by total_sale desc limit 5";
+    const select_menu_query = "select * from menu order by total_sale desc limit 6";
     conn.query(select_menu_query, (err, select_menu_result, fields) => {
         if(err){
             console.error(err);

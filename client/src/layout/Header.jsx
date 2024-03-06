@@ -22,7 +22,7 @@ function Header() {
                 <Link to="/">EVENT 게시판</Link>
             </div>
             <div className="header-right-menu">
-                <Link>회원가입</Link>
+                <Link to="/signup">회원가입</Link>
                 <span>|</span>
                 <Link>로그인</Link>
                 <span>|</span>

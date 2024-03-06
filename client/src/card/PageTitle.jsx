@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function DivisionDetailTitle({detail}) {
+function PageTitle({detail}) {
 
     let pageName;
 
@@ -33,18 +33,20 @@ function DivisionDetailTitle({detail}) {
         case "catsnack":
             pageName = "고양이 수제간식";
             break;
+        case "signup":
+            pageName = "회원 가입";
         default:
             break;
     }
 
     return (
-    <DetailTitleStyled>
+    <PageTitleStyled>
         <p>{pageName}</p>
-    </DetailTitleStyled>
+    </PageTitleStyled>
     )
 }
 
-const DetailTitleStyled = styled.div`
+const PageTitleStyled = styled.div`
     p{
         padding-bottom: 8px;
         text-align: center;
@@ -56,4 +58,4 @@ const DetailTitleStyled = styled.div`
     }
 `
 
-export default DivisionDetailTitle
+export default PageTitle

@@ -3,7 +3,7 @@ import axios from 'axios'
 import MenuCard from '../card/MenuCard';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import DivisionDetailTitle from '../card/DivisionDetailTitle';
+import PageTitle from '../card/PageTitle';
 
 function DivisionDetail() {
 
@@ -31,7 +31,7 @@ function DivisionDetail() {
     
     return (
     <>
-    <DivisionDetailTitle detail={detail} />
+    <PageTitle detail={detail} />
     {
         setFeedlist.length !== 0 &&
         <FeedStyled>

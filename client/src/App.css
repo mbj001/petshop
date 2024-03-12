@@ -5,6 +5,7 @@
 
 :root{
     --price-red: #ff6699;
+    --border-gray-light: #d7d5d5;
 }
 
 a{
@@ -21,3 +22,4 @@ body{
 .M-text-444444{ color: #444444; }
 
 .M-text-gray{ color: gray; }
+.M-gray-light{ color : #d7d5d5; }

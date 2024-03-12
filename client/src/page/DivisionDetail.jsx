@@ -47,7 +47,8 @@ function DivisionDetail() {
 }
 
 const FeedStyled = styled.div`
-    width: 100%;
+    // width: 100%;
+    width: 1150px;
     min-width: 1000px;
     display: flex;
     justify-content: center;

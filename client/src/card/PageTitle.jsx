@@ -35,6 +35,16 @@ function PageTitle({detail}) {
             break;
         case "signup":
             pageName = "회원 가입";
+            break;
+        case "login":
+            pageName = "로그인";
+            break;
+        case "basket":
+            pageName = "장바구니";
+            break;
+        case "order":
+            pageName = "주문서 작성";
+            break;
         default:
             break;
     }

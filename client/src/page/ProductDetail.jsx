@@ -8,9 +8,12 @@ import { BsCart2 } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { FaRegHeart } from "react-icons/fa";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { getCookie } from '../config/cookie';
+import { Link } from 'react-router-dom';
 
 function ProductDetail() {
 
+    const user_id = getCookie("client.sid");
     const {menu_id} = useParams();
     const [product_info, setProduct_info] = useState([]);
     const [order_count, setOrder_count] = useState(1);
@@ -36,6 +39,28 @@ function ProductDetail() {
 
     function orderCountPlus(){
         setOrder_count(order_count + 1);
+    }
+
+    function orderFunc(){
+        // console.log("유저 ID : " + user_id);
+        // console.log("제품 ID : " + product_info[0].menu_id);
+        // console.log("갯수 : " + order_count);
+
+        axios.post("http://localhost:8080/client/addOrder", {
+            user_id: user_id,
+            menu_id: product_info[0].menu_id,
+            count: order_count,
+            total_price: Number(order_count) * Number(product_info[0].price)
+        })
+        .then(({data}) => {
+            if(data === 1){
+                // alert("구매페이지로 이동합니다.");
+                // window.location = "/order/buynow";
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     }
 
     return (
@@ -95,7 +120,9 @@ function ProductDetail() {
                 </div>
                 <div className="flex">
                     <div className="buy-button">
-                        BUY IT NOW
+                        {/* <Link to="/order/buynow" onClick={() => orderFunc()}>BUY IT NOW</Link> */}
+                        {/* <p onClick={() => orderFunc()} className="font-bold">BUY IT NOW</p> */}
+                        <Link to="/order" onClick={() => orderFunc()} state={{order_list: []}} className="font-bold">BUY IT NOW</Link>
                     </div>
                     <div className="cart-button flex items-center">
                         <BsCart2 className="m-auto" />

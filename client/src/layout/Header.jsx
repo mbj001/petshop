@@ -1,8 +1,23 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-
+import { AppContext } from '../App'
+import axios from 'axios'
+import { getCookie, removeCookie } from '../config/cookie'
 function Header() {
+    const loginSession = useContext(AppContext);
+
+    async function logoutClick(){
+        const logoutValue = await axios.post("http://localhost:8080/client/logout", {token: getCookie("connect.sid")});
+
+        removeCookie("client.sid");
+        removeCookie("connect.sid");
+        window.localStorage.setItem("login", false);
+        alert("로그아웃 되었습니다.");
+        window.location = "/";
+        // console.log(logoutValue.data.logoutSuccess);
+    }
+
     return (
     <>
     <HeadBox>
@@ -22,13 +37,13 @@ function Header() {
                 <Link to="/">EVENT 게시판</Link>
             </div>
             <div className="header-right-menu">
-                <Link to="/signup">회원가입</Link>
+                { loginSession === false? <Link to="/signup">회원가입</Link> : <Link to="/modify">정보수정</Link> }
                 <span>|</span>
-                <Link>로그인</Link>
+                { loginSession === false? <Link to="/signin">로그인</Link> : <p className="inline text-[11px] M-text-gray cursor-pointer" onClick={() => logoutClick()}>로그아웃</p> }
                 <span>|</span>
                 <Link>마이페이지</Link>
                 <span>|</span>
-                <Link>장바구니</Link>
+                <Link to="/basket">장바구니</Link>
             </div>
         </div>
         <div className="header-mid">

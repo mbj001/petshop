@@ -15,26 +15,12 @@ function Order() {
     const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
     const user_id = getCookie("client.sid");
 
-    function purchaseFunc(){
-        setPurchaseModalOpen(true);
-
-        axios.post("http://localhost:8080/client/purchase", {
-            user_id: user_id,
-            order_list: order_list
-        })
-        .then(({data}) => {
-            
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }
-
+    
     useEffect(() => {
-
+        
         let price_val = 0;
         let total_price_val = 0;
-
+        
         // But It Now 로 진입
         if(order_list.length === 0){
             axios.post("http://localhost:8080/client/basketInfo", {
@@ -50,7 +36,6 @@ function Order() {
                 if(price_val >= 40000){
                     setDelivery_price(0);
                 }
-    
             })
             .catch((err) => {
                 console.log(err);
@@ -61,14 +46,28 @@ function Order() {
             for(let i=0; i<order_list.length; i++){
                 price_val += order_list[i].total_price;
             }
-    
             setOrder_price(price_val);
             if(price_val >= 40000){
                 setDelivery_price(0);
             }
         }
-
+        
     }, [])
+    
+    function purchaseFunc(){
+        setPurchaseModalOpen(true);
+
+        axios.post("http://localhost:8080/client/purchase", {
+            user_id: user_id,
+            order_list: order_list
+        })
+        .then(({data}) => {
+            
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
 
     return (
         <>

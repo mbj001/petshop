@@ -83,8 +83,8 @@ router.post("/getInfo", (req, res) => {
     })
 })
 
-router.post("/addOrder", (req, res) => {
-    console.log("router.post('/client/addOrder')");
+router.post("/addBasket", (req, res) => {
+    console.log("router.post('/client/addBasket')");
 
     const insert_basket_query = `insert into basket (user_id, menu_id, count, total_price) values (?, ?, ?, ?)`;
     conn.query(insert_basket_query, [req.body.user_id, req.body.menu_id, req.body.count, Number(req.body.total_price)], (err, insert_basket_result, fields) => {
@@ -104,7 +104,7 @@ router.post("/basketInfo", (req, res) => {
     console.log("router.post('/client/basketInfo')");
 
     if(req.body.buyitnow === true){     // buy it now 클릭
-        const select_basket_query = `select * from basket inner join menu on menu.menu_id = basket.menu_id where ? and payment = false order by basket_id desc limit 1`;
+        const select_basket_query = `select * from basket inner join menu on menu.menu_id = basket.menu_id where ? order by basket_id desc limit 1`;
         conn.query(select_basket_query, [{user_id: req.body.user_id}], (err, select_basket_result, fields) => {
             if(err){
                 console.log(err);
@@ -116,7 +116,7 @@ router.post("/basketInfo", (req, res) => {
         })
     }
     else if(req.body.buyitnow === false){
-        const select_basket_query = 'select * from basket inner join menu on menu.menu_id = basket.menu_id where ? and payment = false order by basket_id desc';
+        const select_basket_query = 'select * from basket inner join menu on menu.menu_id = basket.menu_id where ? order by basket_id desc';
         conn.query(select_basket_query, [{user_id: req.body.user_id}], (err, select_basket_result, fields) => {
             if(err){
                 console.error(err);
@@ -134,30 +134,98 @@ router.post("/basketInfo", (req, res) => {
     return ;
 })
 
+// 결제 완료
 router.post("/purchase", (req, res) => {
     console.log("router.post('/client/purchae')");
 
     const order_list = req.body.order_list;
 
-    let update_basket_query = "update basket set payment = true where ";
-
+    let delete_basket_query = "delete from basket where ";
+    let insert_order_query = "insert into order_payment (user_id, menu_id, count, amount_price) values ";
+    let select_menu_query = "select menu_id, name, total_sale from menu where "
     for(let i=0; i<order_list.length; i++){
-        update_basket_query += "basket_id = " +order_list[i].basket_id;
+        delete_basket_query += "basket_id = " +order_list[i].basket_id;
+        insert_order_query += "('" + order_list[i].user_id + "', " + order_list[i].menu_id + ", " + order_list[i].count + ", " + order_list[i].total_price + ")";
+        select_menu_query += "menu_id = " + order_list[i].menu_id;
         if(i !== order_list.length -1){
-            update_basket_query += " or "
+            delete_basket_query += " or "
+            insert_order_query += ", "
+            select_menu_query += " or "
         }
     }
 
     
-
-    conn.query(update_basket_query, (err, update_basket_result, fields) => {
+    // basket 테이블 delete
+    conn.query(delete_basket_query, (err, delete_basket_result, fields) => {
         if(err){
             console.log(err);
         }
         else{
-            res.json(1);
+            // order_payment 테이블 insert
+            conn.query(insert_order_query, (err, insert_order_result, fields) => {
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    // menu 테이블 total_sale 증가
+                    conn.query(select_menu_query, (err, select_menu_result, fields) => {
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            for(let i=0; i<order_list.length; i++){
+                                for(let j=0; j<select_menu_result.length; j++){
+                                    if(order_list[i].menu_id === select_menu_result[j].menu_id){
+                                        select_menu_result[j].total_sale += order_list[i].count;
+                                        break;
+                                    }
+                                }
+                            }
+                            let update_menu_query = "update menu set total_sale = CASE";
+                            for(let i=0; i<select_menu_result.length; i++){
+                                update_menu_query += " WHEN menu_id = " + select_menu_result[i].menu_id + " THEN " + select_menu_result[i].total_sale;
+                            }
+                            
+                            update_menu_query += " END WHERE menu_id IN ("
+                            for(let i=0; i<select_menu_result.length; i++){
+                                update_menu_query += select_menu_result[i].menu_id;
+                                if(i !== select_menu_result.length - 1){
+                                    update_menu_query += ", "
+                                }
+                            }
+                            update_menu_query += ")";
+    
+                            conn.query(update_menu_query, (err, update_menu_result, fields) => {
+                                if(err){
+                                    console.log(err);
+                                }
+                                else{
+                                    res.json(1);
+                                }
+                            })
+                        }
+                
+                    })
+                    
+                }
+            })
+
         }
     });
     return ;
+})
+
+router.post("/basketCount", (req, res) => {
+    console.log("router.post('/client/basketCount')");
+
+    const select_basket_query = `select count(*) as count from basket where ?`;
+    conn.query(select_basket_query, [{user_id: req.body.user_id}], (err, select_basket_result, fields) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json(select_basket_result[0].count)
+        }
+    })
 })
 module.exports = router;

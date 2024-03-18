@@ -10,6 +10,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { getCookie } from '../config/cookie';
 import { Link } from 'react-router-dom';
+import BasketCompleteModal from '../modal/BasketCompleteModal';
 
 function ProductDetail() {
 
@@ -17,6 +18,7 @@ function ProductDetail() {
     const {menu_id} = useParams();
     const [product_info, setProduct_info] = useState([]);
     const [order_count, setOrder_count] = useState(1);
+    const [basketModal, setBasketModal] = useState(false);
 
     useEffect(() => {
         axios.get("http://localhost:8080/clientProduct/productDetail/" + menu_id)
@@ -41,12 +43,8 @@ function ProductDetail() {
         setOrder_count(order_count + 1);
     }
 
-    function orderFunc(){
-        // console.log("유저 ID : " + user_id);
-        // console.log("제품 ID : " + product_info[0].menu_id);
-        // console.log("갯수 : " + order_count);
-
-        axios.post("http://localhost:8080/client/addOrder", {
+    function addBasketFunc(){
+        axios.post("http://localhost:8080/client/addBasket", {
             user_id: user_id,
             menu_id: product_info[0].menu_id,
             count: order_count,
@@ -54,8 +52,6 @@ function ProductDetail() {
         })
         .then(({data}) => {
             if(data === 1){
-                // alert("구매페이지로 이동합니다.");
-                // window.location = "/order/buynow";
             }
         })
         .catch((err) => {
@@ -66,6 +62,7 @@ function ProductDetail() {
     return (
         product_info.length !== 0 &&
         <ProductDetailStyled>
+            { basketModal === true && <BasketCompleteModal setBasketModal={setBasketModal} /> }
             <div className="mr-[80px]">
                 <img src={"/image/menu/" + product_info[0].image} alt="menu_image" className="w-full" />
             </div>
@@ -119,13 +116,9 @@ function ProductDetail() {
                     <p className="text-[12px] font-bold">Total : ￦{product_info[0].price * order_count} <span className="M-text-444444 font-normal">({order_count}개)</span></p>
                 </div>
                 <div className="flex">
-                    <div className="buy-button">
-                        {/* <Link to="/order/buynow" onClick={() => orderFunc()}>BUY IT NOW</Link> */}
-                        {/* <p onClick={() => orderFunc()} className="font-bold">BUY IT NOW</p> */}
-                        <Link to="/order" onClick={() => orderFunc()} state={{order_list: []}} className="font-bold">BUY IT NOW</Link>
-                    </div>
-                    <div className="cart-button flex items-center">
-                        <BsCart2 className="m-auto" />
+                    <Link to="/order" onClick={() => addBasketFunc()} state={{order_list: []}} className="buy-button font-bold">BUY IT NOW</Link>
+                    <div className="cart-button flex items-center" onClick={() => {addBasketFunc(); setBasketModal(true)}}>
+                        <BsCart2 className="m-auto"/>
                     </div>
                     <div className="heart-button flex items-center">
                         <IoMdHeartEmpty className="m-auto" />

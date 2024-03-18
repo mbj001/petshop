@@ -9,6 +9,7 @@ import PageTitle from '../card/PageTitle';
 function Basket() {
     
     const [allCheckVal, setAllCheckVal] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
     const user_id = getCookie("client.sid");
     const {params} = useParams();
     const [basket_info, setBasket_info] = useState([]);
@@ -23,6 +24,9 @@ function Basket() {
                 selected_list.push(basket_info[i]);
             }
         }
+        if(isChecked === false){
+            alert("한 가지 이상 선택해야 합니다.");
+        }
     }
 
     function checkboxClickFunc(index){
@@ -33,8 +37,10 @@ function Basket() {
                 array.push(basket_info[i]);
                 if(allCheckVal === false){
                     array[i].checked = true;
+                    setIsChecked(true);
                 }
                 else{
+                    setIsChecked(false);
                     array[i].checked = false;
                 }
             }
@@ -50,6 +56,15 @@ function Basket() {
                     array[i].checked = !array[i].checked;
                 }
             }
+            for(let i=0; i<array.length; i++){
+                if(array[i].checked === true){
+                    setIsChecked(true);
+                    break;
+                }
+                if(i === array.length-1){
+                    setIsChecked(false);
+                }
+            }    
             setBasket_info(array);
         }
     }
@@ -161,14 +176,13 @@ function Basket() {
             </table>
         </div>
         <div className="flex justify-center">
-            {/* <div className="all-order-button" onClick={() => orderPaymentFunc("all")}>
-                전체상품주문
-            </div>
-            <div className="choice-order-button" onClick={() => orderPaymentFunc()}>
-                선택상품주문
-            </div> */}
             <Link to="/order" className="all-order-button" state={{order_list: basket_info}}>전체상품주문</Link>
-            <Link to="/order" className="choice-order-button" onClick={() => orderListFunc()} state={{order_list: selected_list}}>선택상품주문</Link>
+            {
+                isChecked === true ?
+                <Link to="/order" className="choice-order-button" onClick={() => orderListFunc()} state={{order_list: selected_list}}>선택상품주문</Link>
+                :
+                <div className="choice-order-button" onClick={() => orderListFunc()}>선택상품주문</div>
+            }
         </div>
     </OrderStyled>
     )

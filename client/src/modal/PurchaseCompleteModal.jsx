@@ -33,7 +33,7 @@ const PurchaseModalStyle = styled.div`
         // margin: 0 auto;
         width: 400px;
         height: 200px;
-        background-color: red;
+        background-color: white;
     }
 `
 

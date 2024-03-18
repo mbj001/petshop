@@ -10,9 +10,9 @@ function App() {
     const [loginSession, setLoginSession] = useState(JSON.parse(window.localStorage.getItem("login")));
 
     useEffect(() => {
-    
+        // console.log(loginSession);
         if(loginSession === true || loginSession === false){
-
+            
         }
         // 처음 접속 시 세션 없는 경우
         else{   

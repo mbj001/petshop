@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../App'
@@ -6,6 +6,7 @@ import axios from 'axios'
 import { getCookie, removeCookie } from '../config/cookie'
 function Header() {
     const loginSession = useContext(AppContext);
+    const [basketCount, setBasketCount] = useState(0);
 
     async function logoutClick(){
         const logoutValue = await axios.post("http://localhost:8080/client/logout", {token: getCookie("connect.sid")});
@@ -18,12 +19,25 @@ function Header() {
         // console.log(logoutValue.data.logoutSuccess);
     }
 
+    useEffect(() => {
+        axios.post("http://localhost:8080/client/basketCount", {
+            user_id: getCookie("client.sid")
+        })
+        .then(({data}) => {
+            console.log(data);
+            setBasketCount(data);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }, [])
+
     return (
     <>
     <HeadBox>
         <div className="header-top"></div>
         <div className="header-menu">
-            <div className="header-left-menu">
+            <div className="flex items-center">
                 <Link to="/">Home</Link>
                 <span>|</span>
                 <Link to="/">공지사항</Link>
@@ -36,14 +50,17 @@ function Header() {
                 <span>|</span>
                 <Link to="/">EVENT 게시판</Link>
             </div>
-            <div className="header-right-menu">
+            <div className="flex items-center">
                 { loginSession === false? <Link to="/signup">회원가입</Link> : <Link to="/modify">정보수정</Link> }
                 <span>|</span>
                 { loginSession === false? <Link to="/signin">로그인</Link> : <p className="inline text-[11px] M-text-gray cursor-pointer" onClick={() => logoutClick()}>로그아웃</p> }
                 <span>|</span>
                 <Link>마이페이지</Link>
                 <span>|</span>
-                <Link to="/basket">장바구니</Link>
+                <div className="flex items-center">
+                    <Link to="/basket">장바구니</Link>
+                    <div className="basket-count">{basketCount}</div>
+                </div>
             </div>
         </div>
         <div className="header-mid">
@@ -90,8 +107,9 @@ const HeadBox = styled.div`
     .header-menu{
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 80%;
-        margin: 0 auto;
+        margin: 10px auto;
         // background-color: #eee;
     }
 
@@ -110,14 +128,23 @@ const HeadBox = styled.div`
         color: black;
     }
 
-    .header-left-menu{
-        display: flex;
-        align-items: center;
-    }
-
     .header-mid img{
         padding-top: 30px;
         margin: 0 auto;
+    }
+
+    .basket-count{
+        background-color: #2e2e2e;
+        color: white;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 5px;
+        font-weight: 700;
     }
 `
 

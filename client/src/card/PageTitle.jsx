@@ -45,6 +45,9 @@ function PageTitle({detail}) {
         case "order":
             pageName = "주문서 작성";
             break;
+        case "wishlist":
+            pageName = "관심상품";
+            break;
         default:
             break;
     }

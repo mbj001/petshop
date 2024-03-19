@@ -14,7 +14,7 @@ import Signin from '../page/Signin'
 import Modify from '../page/Modify'
 import Basket from '../page/Basket'
 import Order from '../page/Order'
-
+import WishList from '../page/WishList'
 
 function Router() {
     return (
@@ -36,6 +36,7 @@ function Router() {
                 {/* <Route path=":params" element={<Order />} /> */}
             </Route> 
             <Route path="/basket" element={<Basket />} />
+            <Route path="/wishlist" element={<WishList />} />
         </Routes>
         <Footer />
     </BrowserRouter>

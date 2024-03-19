@@ -11,6 +11,8 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import { getCookie } from '../config/cookie';
 import { Link } from 'react-router-dom';
 import BasketCompleteModal from '../modal/BasketCompleteModal';
+import DetailPoster from '../component/DetailPoster';
+import RelatedProduct from '../component/RelatedProduct';
 
 function ProductDetail() {
 
@@ -59,8 +61,24 @@ function ProductDetail() {
         })
     }
 
+    function addWishList(){
+        axios.post("http://localhost:8080/client/addWishList", {
+            user_id: user_id,
+            menu_id: product_info[0].menu_id
+        })
+        .then(({data}) => {
+            if(data === 1){
+                alert("관심상품에 추가되었습니다.");
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
     return (
         product_info.length !== 0 &&
+        <>
         <ProductDetailStyled>
             { basketModal === true && <BasketCompleteModal setBasketModal={setBasketModal} /> }
             <div className="mr-[80px]">
@@ -120,18 +138,22 @@ function ProductDetail() {
                     <div className="cart-button flex items-center" onClick={() => {addBasketFunc(); setBasketModal(true)}}>
                         <BsCart2 className="m-auto"/>
                     </div>
-                    <div className="heart-button flex items-center">
+                    <div className="heart-button flex items-center" onClick={() => addWishList()}>
                         <IoMdHeartEmpty className="m-auto" />
                     </div>
                 </div>
             </div>
         </ProductDetailStyled>
+        <RelatedProduct division={product_info[0].division} />
+        <DetailPoster menu_id={product_info[0].menu_id} />
+        </>
     )
 }
 
 const ProductDetailStyled = styled.div`
     // width: 80%;
     margin-top: 50px;
+    margin-bottom: 100px;
     min-width: 950px;
     display: flex;
     justify-content: center;

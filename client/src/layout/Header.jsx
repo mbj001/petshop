@@ -7,7 +7,7 @@ import { getCookie, removeCookie } from '../config/cookie'
 function Header() {
     const loginSession = useContext(AppContext);
     const [basketCount, setBasketCount] = useState(0);
-
+    const [myPageEvent, setMyPageEvent] = useState(false);
     async function logoutClick(){
         const logoutValue = await axios.post("http://localhost:8080/client/logout", {token: getCookie("connect.sid")});
 
@@ -50,23 +50,37 @@ function Header() {
                 <span>|</span>
                 <Link to="/">EVENT 게시판</Link>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center relative">
                 { loginSession === false? <Link to="/signup">회원가입</Link> : <Link to="/modify">정보수정</Link> }
                 <span>|</span>
                 { loginSession === false? <Link to="/signin">로그인</Link> : <p className="inline text-[11px] M-text-gray cursor-pointer" onClick={() => logoutClick()}>로그아웃</p> }
                 <span>|</span>
-                <Link>마이페이지</Link>
+                <Link onMouseOver={() => setMyPageEvent(true)} onMouseOut={() => setMyPageEvent(false)}>마이페이지</Link>
                 <span>|</span>
                 <div className="flex items-center">
                     <Link to="/basket">장바구니</Link>
                     <div className="basket-count">{basketCount}</div>
                 </div>
+                {
+                    myPageEvent === true &&
+                    <MyPage onMouseOver={() => setMyPageEvent(true)} onMouseOut={() => setMyPageEvent(false)}>
+                        <div>
+                            <Link>주문조회</Link>
+                            <Link to="/wishlist">관심상품</Link>
+                            <Link>마일리지</Link>
+                            <Link>쿠폰조회</Link>
+                            <Link>내게시물</Link>
+                        </div>
+                    </MyPage>
+                }
             </div>
         </div>
         <div className="header-mid">
-            <Link to="/">
-                <img src="/image/header-image.png" alt="header-image" className="w-[400px]"></img>
-            </Link>
+                <div>
+                    <Link to="/">
+                        <img src="/image/header-image.png" alt="header-image"></img>
+                    </Link>
+                </div>
         </div>
     </HeadBox>
     <Menu>
@@ -128,9 +142,14 @@ const HeadBox = styled.div`
         color: black;
     }
 
-    .header-mid img{
-        padding-top: 30px;
-        margin: 0 auto;
+    .header-mid{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-top: 10px;
+        >div{
+            width: 400px;
+        }
     }
 
     .basket-count{
@@ -171,6 +190,38 @@ const Menu = styled.div`
     a:hover{
         color: black;
         transition: 0.4s;
+    }
+`
+
+const MyPage = styled.div`
+
+    position: absolute;
+    top: 15px;
+    left: 90px;
+    // background-color: red;
+    padding-top: 10px;
+
+    >div{
+        width: 100px;
+        height: 140px;
+        background-color: white;
+        border: 1px solid #cccccc;
+        padding-top: 6px;
+    }
+
+    >div>a{
+        display: block;
+        font-size: 12px;
+        color: gray;
+        margin: 7px 15px;
+    }
+    
+    >div>>a:hover{
+        color: #2e2e2e;
+    }
+
+    >div:hover{
+        border: 1px solid #2e2e2e;
     }
 `
 

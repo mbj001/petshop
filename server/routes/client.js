@@ -228,4 +228,70 @@ router.post("/basketCount", (req, res) => {
         }
     })
 })
+
+router.post("/addWishList", (req, res) => {
+    console.log("router.post('/client/addWishList')");
+    const insert_wishlist_query = `insert into wishlist (user_id, menu_id) values (?, ?)`;
+    conn.query(insert_wishlist_query, [req.body.user_id, req.body.menu_id], (err, insert_wishlist_result, fields) => {
+        if(err){
+            console.log(err);
+            res.json(-1);
+        }
+        else{
+            res.json(1);
+        }
+    })
+    return; 
+})
+
+router.post("/wishlistInfo", (req, res) => {
+    console.log("router.post('/client/wishlistInfo')");
+
+    const select_wishlist_query = `select * from wishlist inner join menu on menu.menu_id = wishlist.menu_id where ?`;
+    conn.query(select_wishlist_query, [{user_id: req.body.user_id}], (err, select_wishlist_result, fields) => {
+        if(err){
+            console.error(err);
+            res.json(-1);
+        }
+        else{
+            res.json(select_wishlist_result);
+        }
+    })
+    return ;
+})
+
+// 관심상품 -> 삭제버튼 클릭
+router.post("/delwishlist", (req, res) => {
+    console.log("router.post('/client/delwishlist')");
+
+    const delete_wishlist_query = `delete from wishlist where ? and ?`;
+    conn.query(delete_wishlist_query, [{user_id: req.body.user_id}, {wishlist_id: req.body.wishlist_id}], (err, delete_wishlist_result, fields) => {
+        if(err){
+            console.log(err);
+            res.json(-1);
+        }
+        else{
+            res.json(1);
+        }
+    })
+    return ;
+})
+
+// 관심상품 -> 관심상품비우기 클릭
+router.post("/clearWishList", (req, res) => {
+    console.log("router.post('/client/clearWishList')");
+
+    const delete_wishlist_query = `delete from wishlist where ?`;
+    conn.query(delete_wishlist_query, [{user_id: req.body.user_id}], (err, delete_wishlist_result, fields) => {
+        if(err){
+            console.log(err);
+            res.json(-1);
+        }
+        else{
+            res.json(1);
+        }
+    })
+    return ;
+})
+
 module.exports = router;

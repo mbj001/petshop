@@ -2,11 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-function MenuCard({menu_id, name, price, image, isbest, bestRank, likey, total_sale}) {
+function MenuCard({menu_id, name, price, image, isCountSix, bestRank, likey, total_sale, isBest}) {
     return (
-        <MenuCardStyled $best={isbest === true? true : false}>
+        <MenuCardStyled $isCountSix={isCountSix === true? true : false}>
             {
-                isbest === true &&
+                isBest === true &&
                 <BestLogo>
                     <p>BEST {bestRank}</p>
                 </BestLogo>
@@ -35,7 +35,7 @@ function MenuCard({menu_id, name, price, image, isbest, bestRank, likey, total_s
 }
 
 const MenuCardStyled = styled.div`
-    width: ${(props) => props.$best? "200px" : "250px"};
+    width: ${(props) => props.$isCountSix? "200px" : "250px"};
     // width: 13%;
     margin: 10px;
     text-align: center;

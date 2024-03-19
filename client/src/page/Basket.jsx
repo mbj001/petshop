@@ -116,7 +116,11 @@ function Basket() {
         <div className="basket-box">
             <table>
                 <tr>
-                    <td className="table-top-1"><input type="checkbox" checked={allCheckVal} readOnly onClick={() => checkboxClickFunc(-1)}/></td>
+                    <td className="table-top-1">
+                        {
+                            basket_info.length !== 0 && <input type="checkbox" checked={allCheckVal} readOnly onClick={() => checkboxClickFunc(-1)}/>
+                        }
+                    </td>
                     <td className="table-top-2">이미지</td>
                     <td className="table-top-3">상품정보</td>
                     <td className="table-top-4">판매가</td>
@@ -147,41 +151,56 @@ function Basket() {
                         </tr>
                     ))
                     :
-                    <div>
-                        <p>장바구니가 비어있습니다.</p>
-                    </div>
+                    <tr>
+                        <td colSpan={9} className="h-[80px] text-center">
+                            <div>
+                                <p>장바구니가 비어있습니다.</p>
+                            </div>
+                        </td>
+                    </tr>
                 }
-                <tr>
-                    <td colSpan="9" className="h-[50px]">
-                        <div className="flex justify-between items-center px-[15px]">
-                            <p className="text-[11px]">[업체기본배송]</p>
-                            <p className="text-[11px]">상품구매금액 <span className="font-bold">{order_price}</span> + 배송비 {delivery_price} = 합계 : <span className="font-bold text-[14px]">￦{order_price + delivery_price}</span></p>
-                        </div>
-                    </td>
-                </tr>
+                {
+                    basket_info.length !== 0 &&
+                    <tr>
+                        <td colSpan="9" className="h-[50px]">
+                            <div className="flex justify-between items-center px-[15px]">
+                                <p className="text-[11px]">[업체기본배송]</p>
+                                <p className="text-[11px]">상품구매금액 <span className="font-bold">{order_price}</span> + 배송비 {delivery_price} = 합계 : <span className="font-bold text-[14px]">￦{order_price + delivery_price}</span></p>
+                            </div>
+                        </td>
+                    </tr>
+                }
             </table>
         </div>
-        <div className="price-info">
-            <table>
-                <tr className="price-info-text">
-                    <td className="w-[250px]">총 상품금액</td>
-                    <td className="w-[250px]">총 배송비</td>
-                    <td>결제예정금액</td>
-                </tr>
-                <tr className="price-info-amount">
-                    <td>￦{order_price}</td>
-                    <td>￦{delivery_price}</td>
-                    <td>￦{order_price + delivery_price}</td>
-                </tr>
-            </table>
-        </div>
+            {
+                basket_info.length !== 0 &&
+                <div className="price-info">
+                    <table>
+                        <tr className="price-info-text">
+                            <td className="w-[250px]">총 상품금액</td>
+                            <td className="w-[250px]">총 배송비</td>
+                            <td>결제예정금액</td>
+                        </tr>
+                        <tr className="price-info-amount">
+                            <td>￦{order_price}</td>
+                            <td>￦{delivery_price}</td>
+                            <td>￦{order_price + delivery_price}</td>
+                        </tr>
+                    </table>
+                </div>
+            }
         <div className="flex justify-center">
-            <Link to="/order" className="all-order-button" state={{order_list: basket_info}}>전체상품주문</Link>
             {
                 isChecked === true ?
+                <>
+                <Link to="/order" className="all-order-button" state={{order_list: basket_info}}>전체상품주문</Link>
                 <Link to="/order" className="choice-order-button" onClick={() => orderListFunc()} state={{order_list: selected_list}}>선택상품주문</Link>
+                </>
                 :
+                <>
+                <div className="all-order-button" onClick={() => orderListFunc()}>전체상품주문</div>
                 <div className="choice-order-button" onClick={() => orderListFunc()}>선택상품주문</div>
+                </>
             }
         </div>
     </OrderStyled>

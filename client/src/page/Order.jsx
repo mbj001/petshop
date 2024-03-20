@@ -7,7 +7,7 @@ import axios from 'axios';
 import { getCookie } from '../config/cookie';
 import PurchaseCompleteModal from '../modal/PurchaseCompleteModal';
 
-function Order() {
+function Order({handleRender}) {
     
     const [order_list, setOrder_list] = useState(useLocation().state.order_list);
     const [order_price, setOrder_price] = useState(0);
@@ -62,7 +62,8 @@ function Order() {
             order_list: order_list
         })
         .then(({data}) => {
-            
+            // 구매 완료
+            handleRender();
         })
         .catch((err) => {
             console.log(err);

@@ -23,8 +23,8 @@ function DetailPoster({menu_id}) {
     <DetailList detail_num={2} />
         {
             imagelist.map((item, index) => (
-                <div>
-                    <img src={"/image/detail/"+item.detail_image} alt={item.detail_image} className="m-auto" isBest={false}/>
+                <div key={index}>
+                    <img src={"/image/detail/"+item.detail_image} alt={item.detail_image} className="m-auto"/>
                 </div>
             ))
         }

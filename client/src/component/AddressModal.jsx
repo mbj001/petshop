@@ -3,7 +3,7 @@ import DaumPostcode from "react-daum-postcode";
 import styled from "styled-components";
 import { IoIosClose } from "react-icons/io";
 
-function AddressModal({set_Address_modal_up}) {
+function AddressModal({set_Address_modal_up, setSignup_info, signup_info}) {
     const complete = (data) =>{
         let fullAddress = data.address;
         let extraAddress = '';
@@ -17,14 +17,11 @@ function AddressModal({set_Address_modal_up}) {
             }
             fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
         }
-        console.log(data)
         console.log(fullAddress)
         console.log(data.zonecode)
 
-        // props.setcompany({
-        //     ...props.company,
-        //     address:fullAddress,
-        // })
+        setSignup_info({...signup_info, user_address_zone_code: data.zonecode, user_address_basic: fullAddress});
+
     }
 
     return (

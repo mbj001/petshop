@@ -24,7 +24,7 @@ function RelatedProduct({division}) {
     <RelatedProductStyle>
         {
             relativeList.map((item, index) => (
-                <MenuCard menu_id={item.menu_id} name={item.name} price={item.price} image={item.image} isCountSix={true}/>
+                <MenuCard key={item.menu_id} menu_id={item.menu_id} name={item.name} price={item.price} image={item.image} isCountSix={true}/>
             ))
         }
     </RelatedProductStyle>

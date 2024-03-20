@@ -12,7 +12,9 @@ function SignUp() {
         user_pw_confirm_number: "",
         user_pw_confirm_answer: "",
         user_name: "",
-        user_address: "",
+        user_address_zone_code: "",
+        user_address_basic: "",
+        user_address_detail: "",
         user_phone: "",
         user_email: "",
         user_gender: "",
@@ -28,6 +30,9 @@ function SignUp() {
     const [birth_year, setBirth_year] = useState("");
     const [birth_month, setBirth_month] = useState("");
     const [birth_day, setBirth_day] = useState("");
+    // 아이디 중복검사 체크
+    const [checkid, setCheckid] = useState(false);
+
 
     const [address_modal_up, set_Address_modal_up] = useState(false);
     const [password_check, setPassword_check] = useState("");
@@ -42,27 +47,51 @@ function SignUp() {
     }, [birth_year, birth_month, birth_day]);
 
     function signupFunc(){
-        axios.post("http://localhost:8080/client/signup", {
-            signup_info: signup_info
+        if(checkid === false){
+            alert("아이디 중복검사를 완료해주세요.");
+        }
+        else{
+            axios.post("http://localhost:8080/client/signup", {
+                signup_info: signup_info
+            })
+            .then(({data}) => {
+                if(data === -1){
+                    console.log("회원 가입 에러");
+                } 
+                else if(data === 1) {
+                    alert("회원가입 성공");
+                    window.location ="http://localhost:3000/signin";
+                    console.log("회원가입 성공!! 로그인 페이지로 이동합니다.");
+                }
+            })
+            .catch((err) => {
+                console.log("에러 입니다.");
+            })
+        }
+    }
+
+    function idCheckFunc(){
+        axios.post("http://localhost:8080/client/checkid", {
+            user_id: signup_info.user_id
         })
         .then(({data}) => {
-            if(data === -1){
-                console.log("회원 가입 에러");
-            } 
-            else if(data === 1) {
-                alert("회원가입 성공");
-                window.location ="http://localhost:3000/signin";
-                console.log("회원가입 성공!! 로그인 페이지로 이동합니다.");
+            if(data === 1){
+                alert("사용가능한 아이디 입니다.");
+                setCheckid(true);
+            }
+            else if(data === 0){
+                alert("이미 사용중인 아이디 입니다.");
+                setSignup_info({...signup_info, user_id: ""});
             }
         })
         .catch((err) => {
-            console.log("에러 입니다.");
+            console.log(err);
         })
     }
 
     return (
     <>
-    {address_modal_up === true && <AddressModal set_Address_modal_up={set_Address_modal_up} />}
+    { address_modal_up === true && <AddressModal set_Address_modal_up={set_Address_modal_up} setSignup_info={setSignup_info} signup_info={signup_info} /> }
     <SignupStyled>
         <PageTitle detail="signup" />
 
@@ -76,7 +105,14 @@ function SignUp() {
             </div>
             <tr>
                 <td className="info-box-item"><div><p>아이디</p><img src="/image/sign_up_star.gif" alt="star" /></div></td>
-                <td className="info-box-input"><div><input type="text" onChange={(e) => setSignup_info({...signup_info, user_id: e.target.value})} /><p>아이디를 입력해 주세요. (영문소문자/숫자, 4~16자)</p></div></td>
+                <td className="info-box-input">
+                    <div>
+                        <input type="text" value={signup_info.user_id} onChange={(e) => setSignup_info({...signup_info, user_id: e.target.value})} />
+                        <p>아이디를 입력해 주세요. (영문소문자/숫자, 4~16자)</p>
+                        <div className="check-id" onClick={() => idCheckFunc()}>중복검사</div>
+                        { checkid === true && <p className="ml-[20px] font-bold text-red-500 text-[14px]">Check Complete</p> }
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td className="info-box-item"><div><p>비밀번호</p><img src="/image/sign_up_star.gif" alt="star" /></div></td>
@@ -123,13 +159,13 @@ function SignUp() {
                 <td className="info-box-item"><div><p>주소</p><img src="/image/sign_up_star.gif" alt="star" /></div></td>
                 <td className="info-box-input">
                     <div className="mt-[4px]">
-                        <input type="text" /><button type="button" onClick={() => set_Address_modal_up(!address_modal_up)}>우편번호</button>
+                        <input type="text" value={signup_info.user_address_zone_code}/><button type="button" onClick={() => set_Address_modal_up(!address_modal_up)}>우편번호</button>
                     </div>
                     <div className="address-input my-[4px]">
-                        <input type="text" className="w-[300px]" /><p>기본주소</p>
+                        <input type="text" className="w-[300px]" value={signup_info.user_address_basic}/><p>기본주소</p>
                     </div>
                     <div className="mb-[4px]">
-                        <input type="text" className="w-[300px]" /><p>나머지주소</p>
+                        <input type="text" className="w-[300px]" onChange={(e) => setSignup_info({...signup_info, user_address_detail: e.target.value})}/><p>나머지주소</p>
                     </div>
                 </td>
             </tr>
@@ -298,6 +334,23 @@ const SignupStyled = styled.div`
             border: 1px solid #2e2e2e;
             background-color: white;
             color: #2e2e2e;
+        }
+    }
+
+    .check-id{
+        width: 60px;
+        height: 22px;
+        background-color: #dedede;
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #2e2e2e;
+        cursor: pointer;
+        border-radius: 3px;
+
+        &:hover{
+            background-color: #cccccc;
         }
     }
 

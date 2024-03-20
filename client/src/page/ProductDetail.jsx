@@ -14,7 +14,7 @@ import BasketCompleteModal from '../modal/BasketCompleteModal';
 import DetailPoster from '../component/DetailPoster';
 import RelatedProduct from '../component/RelatedProduct';
 
-function ProductDetail() {
+function ProductDetail({handleRender}) {
 
     const user_id = getCookie("client.sid");
     const {menu_id} = useParams();
@@ -45,7 +45,7 @@ function ProductDetail() {
         setOrder_count(order_count + 1);
     }
 
-    function addBasketFunc(){
+    function addBasketFunc(division){
         axios.post("http://localhost:8080/client/addBasket", {
             user_id: user_id,
             menu_id: product_info[0].menu_id,
@@ -54,6 +54,8 @@ function ProductDetail() {
         })
         .then(({data}) => {
             if(data === 1){
+                // insert complete
+                handleRender();
             }
         })
         .catch((err) => {

@@ -108,7 +108,7 @@ function WishList() {
                 user_id: user_id,
             })
             .then(({data}) => {
-                // 장바구니 목록 없음
+                // 관심상품 목록 없음
                 if(data === 0){
 
                 }
@@ -143,18 +143,22 @@ function WishList() {
     <WishListStyle>
         <div className="basket-box">
             <table>
-                <tr>
-                    <td className="table-top-1"><input type="checkbox" checked={allCheckVal} readOnly onClick={() => checkboxClickFunc(-1)}/></td>
-                    <td className="table-top-2">이미지</td>
-                    <td className="table-top-3">상품정보</td>
-                    <td className="table-top-4">판매가</td>
-                    {/* <td className="table-top-5">수량</td> */}
-                    <td className="table-top-6">적립금</td>
-                    <td className="table-top-7">배송구분</td>
-                    <td className="table-top-8">배송비</td>
-                    <td className="table-top-9">합계</td>
-                    <td className="table-top-10">선택</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <td className="table-top-1"><input type="checkbox" checked={allCheckVal} readOnly onClick={() => checkboxClickFunc(-1)}/></td>
+                        <td className="table-top-2">이미지</td>
+                        <td className="table-top-3">상품정보</td>
+                        <td className="table-top-4">판매가</td>
+                        {/* <td className="table-top-5">수량</td> */}
+                        <td className="table-top-6">적립금</td>
+                        <td className="table-top-7">배송구분</td>
+                        <td className="table-top-8">배송비</td>
+                        <td className="table-top-9">합계</td>
+                        <td className="table-top-10">선택</td>
+                    </tr>
+
+                </thead>
+                <tbody>
                 {
                     wishlist_info.length !== 0 ?
                     wishlist_info.map((item, index) => (
@@ -195,6 +199,7 @@ function WishList() {
                         </td>
                     </tr>
                 }
+                </tbody>
             </table>
         </div>
         {

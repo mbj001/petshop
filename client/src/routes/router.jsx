@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {BrowserRouter, Routes, Route} from "react-router-dom"
 
 // Layout
@@ -17,9 +17,15 @@ import Order from '../page/Order'
 import WishList from '../page/WishList'
 
 function Router() {
+    const [render, setRender] = useState(false);
+
+    function handleRender(){
+        setRender(!render);
+    }
+
     return (
     <BrowserRouter>
-        <Header />
+        <Header render={render} />
         <ScrollToTop />
         <Routes>
             <Route path="/" element={<Main />} />
@@ -27,16 +33,16 @@ function Router() {
                 <Route path=":detail" element={<DivisionDetail />} />
             </Route>
             <Route path="/productDetail">
-                <Route path=":menu_id" element={<ProductDetail />} />
+                <Route path=":menu_id" element={<ProductDetail handleRender={handleRender} />} />
             </Route>
             <Route path="/signup" element={<SignUp /> } />
             <Route path="/signin" element={<Signin />} />
             <Route path="/modify" element={<Modify />} />
-            <Route path="/order" element={<Order />}>
+            <Route path="/order" element={<Order handleRender={handleRender} />}>
                 {/* <Route path=":params" element={<Order />} /> */}
             </Route> 
-            <Route path="/basket" element={<Basket />} />
-            <Route path="/wishlist" element={<WishList />} />
+            <Route path="/basket" element={<Basket handleRender={handleRender} />} />
+            <Route path="/wishlist" element={<WishList handleRender={handleRender} />} />
         </Routes>
         <Footer />
     </BrowserRouter>

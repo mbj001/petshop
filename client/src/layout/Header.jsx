@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { AppContext } from '../App'
 import axios from 'axios'
 import { getCookie, removeCookie } from '../config/cookie'
-function Header() {
+function Header({render}) {
     const loginSession = useContext(AppContext);
     const [basketCount, setBasketCount] = useState(0);
     const [myPageEvent, setMyPageEvent] = useState(false);
@@ -30,7 +30,7 @@ function Header() {
         .catch((err) => {
             console.log(err);
         })
-    }, [])
+    }, [render])
 
     return (
     <>

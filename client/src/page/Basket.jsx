@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import PageTitle from '../card/PageTitle';
-function Basket() {
+function Basket({handleRender}) {
     
     const [allCheckVal, setAllCheckVal] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
@@ -115,6 +115,7 @@ function Basket() {
         <PageTitle detail="basket" />
         <div className="basket-box">
             <table>
+                <thead>
                 <tr>
                     <td className="table-top-1">
                         {
@@ -130,35 +131,38 @@ function Basket() {
                     <td className="table-top-8">배송비</td>
                     <td className="table-top-9">합계</td>
                 </tr>
-                {
-                    basket_info.length !== 0 ?
-                    basket_info.map((item, index) => (
-                        <tr key={index}>
-                            <td className="table-content-1"><input type="checkbox" checked={item.checked} onClick={() => checkboxClickFunc(index)} readOnly/></td>
-                            <td className="table-content-2"><img src={"/image/menu/" + item.image} alt="menu_image" /></td>
-                            <td className="table-content-3">{item.name}</td>
-                            {/* <td className="table-content-3">{item.checked}</td> */}
-                            <td className="table-content-4">￦{item.price}</td>
-                            <td className="table-content-5">{item.count}</td>
-                            <td className="table-content-6">
-                                <div className="flex items-center justify-center">
-                                    <img src="/image/reserver_image.gif" alt="reserver_image" className="pr-[5px]" />{item.price * 2 / 100}원
+                </thead>
+                <tbody>
+                    {
+                        basket_info.length !== 0 ?
+                        basket_info.map((item, index) => (
+                            <tr key={index}>
+                                <td className="table-content-1"><input type="checkbox" checked={item.checked} onClick={() => checkboxClickFunc(index)} readOnly/></td>
+                                <td className="table-content-2"><img src={"/image/menu/" + item.image} alt="menu_image" /></td>
+                                <td className="table-content-3">{item.name}</td>
+                                {/* <td className="table-content-3">{item.checked}</td> */}
+                                <td className="table-content-4">￦{item.price}</td>
+                                <td className="table-content-5">{item.count}</td>
+                                <td className="table-content-6">
+                                    <div className="flex items-center justify-center">
+                                        <img src="/image/reserver_image.gif" alt="reserver_image" className="pr-[5px]" />{item.price * 2 / 100}원
+                                    </div>
+                                </td>
+                                <td className="table-content-7">업체기본배송</td>
+                                <td className="table-content-8">[조건]</td>
+                                <td className="table-content-9">￦{item.total_price}</td>
+                            </tr>
+                        ))
+                        :
+                        <tr>
+                            <td colSpan={9} className="h-[80px] text-center">
+                                <div>
+                                    <p>장바구니가 비어있습니다.</p>
                                 </div>
                             </td>
-                            <td className="table-content-7">업체기본배송</td>
-                            <td className="table-content-8">[조건]</td>
-                            <td className="table-content-9">￦{item.total_price}</td>
                         </tr>
-                    ))
-                    :
-                    <tr>
-                        <td colSpan={9} className="h-[80px] text-center">
-                            <div>
-                                <p>장바구니가 비어있습니다.</p>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                    }
+                </tbody>
                 {
                     basket_info.length !== 0 &&
                     <tr>
@@ -191,16 +195,16 @@ function Basket() {
             }
         <div className="flex justify-center">
             {
-                isChecked === true ?
-                <>
+                basket_info.length !== 0 ?
                 <Link to="/order" className="all-order-button" state={{order_list: basket_info}}>전체상품주문</Link>
-                <Link to="/order" className="choice-order-button" onClick={() => orderListFunc()} state={{order_list: selected_list}}>선택상품주문</Link>
-                </>
                 :
-                <>
-                <div className="all-order-button" onClick={() => orderListFunc()}>전체상품주문</div>
-                <div className="choice-order-button" onClick={() => orderListFunc()}>선택상품주문</div>
-                </>
+                <div className="all-order-button" onClick={() => alert("장바구니가 비어있습니다.")}>전체상품주문</div>
+            }
+            {
+                isChecked === true ?
+                <Link to="/order" className="choice-order-button" onClick={() => orderListFunc()} state={{order_list: selected_list}}>선택상품주문</Link>
+                :
+                <div className="choice-order-button" onClick={() => alert("장바구니가 비어있습니다.")}>선택상품주문</div>
             }
         </div>
     </OrderStyled>

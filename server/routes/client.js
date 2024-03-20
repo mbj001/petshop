@@ -15,10 +15,10 @@ router.post("/signup", (req, res) => {
 
     const user_pass_bcrypt = bcrypt.hashSync(signup_info.user_pw, Number(process.env.SALT_ROUNDS));
 
-    const insert_query = `insert into client (user_id, user_pw, user_pw_confirm_number, user_pw_confirm_answer, user_name, user_address, user_phone, user_email, user_gender, user_birth, user_pet_info)
-    values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
-    conn.query(insert_query, [signup_info.user_id, user_pass_bcrypt, Number(signup_info.user_pw_confirm_number), signup_info.user_pw_confirm_answer, signup_info.user_name, signup_info.user_address, 
-        signup_info.user_phone, signup_info.user_email, signup_info.user_gender, signup_info.user_birth, signup_info.user_pet_info], (err, insert_result, fields) => {
+    const insert_query = `insert into client (user_id, user_pw, user_pw_confirm_number, user_pw_confirm_answer, user_name, user_address_zone_code, user_address_basic, user_address_detail, user_phone, user_email,
+        user_gender, user_birth, user_pet_info) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
+    conn.query(insert_query, [signup_info.user_id, user_pass_bcrypt, Number(signup_info.user_pw_confirm_number), signup_info.user_pw_confirm_answer, signup_info.user_name, signup_info.user_address_zone_code, 
+        signup_info.user_address_basic, signup_info.user_address_detail, signup_info.user_phone, signup_info.user_email, signup_info.user_gender, signup_info.user_birth, signup_info.user_pet_info], (err, insert_result, fields) => {
             if(err){
                 console.log(err);
                 res.json(-1);
@@ -244,6 +244,7 @@ router.post("/addWishList", (req, res) => {
     return; 
 })
 
+// 관심상품 페이지
 router.post("/wishlistInfo", (req, res) => {
     console.log("router.post('/client/wishlistInfo')");
 
@@ -294,4 +295,23 @@ router.post("/clearWishList", (req, res) => {
     return ;
 })
 
+router.post("/checkid", (req, res) => {
+    console.log("router.post('/client/checkid')");
+
+    const select_client_query = `select user_id from client where ?`;
+    conn.query(select_client_query, [{user_id: req.body.user_id}], (err, select_client_result, fields) => {
+        if(err){
+            console.log(err);
+            res.json(-1);
+        }
+        else{
+            if(select_client_result.length === 0){
+                res.json(1);
+            }
+            else{
+                res.json(0);
+            }
+        }
+    })
+})
 module.exports = router;

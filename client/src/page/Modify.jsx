@@ -322,6 +322,11 @@ const SignupStyled = styled.div`
             background-color: white;
             color: #2e2e2e;
         }
+
+        >a{
+            display: block;
+            width: 110px;
+        }
     }
 
     .delete-button{
@@ -341,6 +346,11 @@ const SignupStyled = styled.div`
             border: 1px solid #2e2e2e;
             background-color: white;
             color: #2e2e2e;
+        }
+
+        >a{
+            display: block;
+            width: 110px;
         }
     }
 

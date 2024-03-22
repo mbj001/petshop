@@ -15,6 +15,7 @@ import Modify from '../page/Modify'
 import Basket from '../page/Basket'
 import Order from '../page/Order'
 import WishList from '../page/WishList'
+import Mileage from '../page/Mileage'
 
 function Router() {
     const [render, setRender] = useState(false);
@@ -43,6 +44,9 @@ function Router() {
             </Route> 
             <Route path="/basket" element={<Basket handleRender={handleRender} />} />
             <Route path="/wishlist" element={<WishList handleRender={handleRender} />} />
+            <Route path="/mileage">
+                <Route path=":mileage_params" element={<Mileage />} />
+            </Route>
         </Routes>
         <Footer />
     </BrowserRouter>

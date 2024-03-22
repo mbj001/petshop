@@ -48,6 +48,9 @@ function PageTitle({detail}) {
         case "wishlist":
             pageName = "관심상품";
             break;
+        case "mileage":
+            pageName = "마일리지";
+            break;
         default:
             break;
     }

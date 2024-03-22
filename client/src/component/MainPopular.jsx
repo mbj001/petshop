@@ -26,7 +26,7 @@ function MainPopular() {
             <MainpopularComp>
                 {
                     popularlist.map((item, index) => (
-                        <MenuCard key={item.menu_id} menu_id={item.menu_id} name={item.name} price={item.price} image={item.image} likey={item.likey} total_sale={item.total_sale} />
+                        <MenuCard key={item.menu_id} menu_id={item.menu_id} name={item.name} price={item.price} accumulate_mileage={item.accumulate_mileage} image={item.image} likey={item.likey} total_sale={item.total_sale} />
                     ))
                 }
             </MainpopularComp>

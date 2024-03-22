@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-function MenuCard({menu_id, name, price, image, isCountSix, bestRank, likey, total_sale, isBest}) {
+function MenuCard({menu_id, name, price, accumulate_mileage, image, isCountSix, bestRank, likey, total_sale, isBest}) {
     return (
         <MenuCardStyled $isCountSix={isCountSix === true? true : false}>
             {

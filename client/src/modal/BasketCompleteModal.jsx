@@ -1,15 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { BsCartCheck } from "react-icons/bs";
 
 function BasketCompleteModal({setBasketModal}) {
     return (
     <BasketModal>
         <div className="modal">
             <div className="text-center mt-[20px]">
-                <p>장바구니에 상품이 정상적으로 담겼습니다..</p>
+                <p className="basket-comment">장바구니에 상품이 정상적으로 담겼습니다.</p>
             </div>
-            <div className="mt-[100px] flex itmes-center justify-center">
+            <BsCartCheck className="cart-icon"/>
+            <div className="flex itmes-center justify-center">
                 <Link to="/basket" className="move-button">장바구니 이동</Link>
                 <p onClick={() => setBasketModal(false)} className="close-button">쇼핑 계속하기</p>
             </div>
@@ -35,17 +37,19 @@ const BasketModal = styled.div`
         width: 400px;
         height: 200px;
         background-color: white;
+        border-radius: 5px;
     }
 
     .move-button,
     .close-button{
-        font-size: 12px;
+        font-size: 11px;
         width: 80px;
         height: 30px;
         margin: 10px 10px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 3px;
     }
 
     .move-button{
@@ -69,6 +73,17 @@ const BasketModal = styled.div`
         background-color: #cfcfcf;
     }
 
+    .basket-comment{
+        font-size: 13px;
+        color: #2e2e2e;
+
+    }
+
+    .cart-icon{
+        font-size: 60px;
+        margin: 20px auto 20px;
+        color: #f05650;
+    }
 `
 
 

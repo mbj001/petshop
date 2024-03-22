@@ -67,7 +67,7 @@ function Header({render}) {
                         <div>
                             <Link>주문조회</Link>
                             <Link to="/wishlist">관심상품</Link>
-                            <Link>마일리지</Link>
+                            <Link to="/mileage/accumulate">마일리지</Link>
                             <Link>쿠폰조회</Link>
                             <Link>내게시물</Link>
                         </div>

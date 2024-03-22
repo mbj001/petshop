@@ -35,8 +35,8 @@ router.post("/search", (req, res) => {
 router.post("/addMenu", (req, res) => {
     console.log("router.post('/serverMenu/addMenu')");
 
-    const insert_search_query = `insert into menu (division, name, price, image) values (?, ?, ?, ?)`;
-    conn.query(insert_search_query, [req.body.add_division, req.body.add_name, req.body.add_price, req.body.add_image], (err, insert_search_result, fields) => {
+    const insert_search_query = `insert into menu (division, name, price, accumulate_mileage, image) values (?, ?, ?, ?, ?)`;
+    conn.query(insert_search_query, [req.body.add_division, req.body.add_name, req.body.add_price, req.body.accumulate_mileage, req.body.add_image], (err, insert_search_result, fields) => {
         if(err){
             console.error(err);
         }
@@ -48,8 +48,8 @@ router.post("/addMenu", (req, res) => {
 
 router.post("/edit", (req, res) => {
     console.log("router.post('/serverMenu/edit')");
-
-    const update_query = `update menu set division="${req.body.division}", name="${req.body.name}", price=${req.body.price}, total_sale=${req.body.total_sale}, image="${req.body.image}", likey=${req.body.likey} where menu_id=${req.body.menu_id}`;
+    // console.log(req.body);
+    const update_query = `update menu set division="${req.body.division}", name="${req.body.name}", price=${req.body.price}, accumulate_mileage=${req.body.accumulate_mileage}, total_sale=${req.body.total_sale}, image="${req.body.image}", likey=${req.body.likey} where menu_id=${req.body.menu_id}`;
     conn.query(update_query, (err, update_result, fields) => {
         if(err){
             console.error(err);

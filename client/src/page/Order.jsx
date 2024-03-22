@@ -6,6 +6,7 @@ import PageTitle from '../card/PageTitle';
 import axios from 'axios';
 import { getCookie } from '../config/cookie';
 import PurchaseCompleteModal from '../modal/PurchaseCompleteModal';
+import UseMileageModal from '../modal/UseMileageModal';
 
 function Order({handleRender}) {
     
@@ -13,6 +14,11 @@ function Order({handleRender}) {
     const [order_price, setOrder_price] = useState(0);
     const [delivery_price, setDelivery_price] = useState(3000);
     const [purchaseModalOpen, setPurchaseModalOpen] = useState(false);
+
+    // mileage 관련 변수
+    const [use_mileage, setUse_mileage] = useState(0);
+    const [mileageModal, setMileageModal] = useState(false);
+
     const user_id = getCookie("client.sid");
 
     
@@ -59,7 +65,8 @@ function Order({handleRender}) {
 
         axios.post("http://localhost:8080/client/purchase", {
             user_id: user_id,
-            order_list: order_list
+            order_list: order_list,
+            use_mileage: use_mileage
         })
         .then(({data}) => {
             // 구매 완료
@@ -72,6 +79,7 @@ function Order({handleRender}) {
 
     return (
         <>
+        { mileageModal === true && <UseMileageModal setUse_mileage={setUse_mileage} setMileageModal={setMileageModal} />}
         { purchaseModalOpen === true && <PurchaseCompleteModal />}
         <OrderStyled>
         <PageTitle detail="order" />
@@ -133,7 +141,17 @@ function Order({handleRender}) {
                 <tr className="price-info-amount">
                     <td>￦{order_price}</td>
                     <td>￦{delivery_price}</td>
-                    <td>￦{order_price + delivery_price}</td>
+                    <td>
+                        <div className="relative">
+                            {
+                                use_mileage == 0 ?
+                                <p>￦{order_price + delivery_price}</p>
+                                :
+                                <p><span className="line-through">￦{order_price + delivery_price}</span><span className="M-red ml-[10px]">￦{order_price + delivery_price - use_mileage}</span></p>
+                            }
+                            <div className="M-button-black mileage-button" onClick={() => setMileageModal(true)}>마일리지 사용</div>
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -280,6 +298,14 @@ const OrderStyled = styled.div`
         text-align: right;
     }
 
+    .mileage-button{
+        font-size: 12px;
+        position: absolute;
+        right: 20px;
+        bottom: 0px;
+        font-weight: 500;
+        padding: 5px 10px;
+    }
 `
 
 

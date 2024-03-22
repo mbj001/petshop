@@ -25,6 +25,7 @@
             <input class="form-control" type="text" placeholder="분류" id="add_division" name="add_division" required>
             <input class="form-control" type="text" placeholder="이름" id="add_name" name="add_name" required>
             <input class="form-control" type="number" placeholder="가격" id="add_price" name="add_price" required>
+            <input class="form-control" type="number" placeholder="적립금" id="accumulate_mileage" name="accumulate_mileage" required>
             <input class="form-control" type="text" placeholder="이미지 파일이름" id="add_image" name="add_image" required>
             <button class="btn btn-success">등록</button>
         </div>
@@ -38,6 +39,7 @@
                 <th class="col">분류</th>
                 <th class="col text-center">이름</th>
                 <th class="col">가격</th>
+                <th class="col">적립금</th>
                 <th class="col">판매량</th>
                 <th class="col">이미지</th>
                 <th class="col">종야요</th>
@@ -52,6 +54,7 @@
                 <td>{{menu.division}}</td>
                 <td>{{menu.name}}</td>
                 <td>{{menu.price}}</td>
+                <td>{{menu.accumulate_mileage}}</td>
                 <td>{{menu.total_sale}}</td>
                 <td>{{menu.image}}</td>
                 <td>{{menu.likey}}</td>
@@ -61,10 +64,11 @@
             <tr class="d-none table-active">
                 <td><input type="hidden" value="{{menu.menu_id}}" id="menu_id" name="menu_id"></td>
                 <td><input type="text" value="{{menu.division}}" id="edit_division" name="edit_division"></td>
-                <td><input type="text" value="{{menu.name}}" id="edit_name" name="edit_division"></td>
-                <td><input type="number" value="{{menu.price}}" id="edit_price" name="edit_division"></td>
-                <td><input type="number" value="{{menu.total_sale}}" id="edit_total_sale" name="edit_division"></td>
-                <td><input type="text" value="{{menu.image}}" id="edit_image" name="edit_division"></td>
+                <td><input type="text" value="{{menu.name}}" id="edit_name" name="edit_name"></td>
+                <td><input type="number" value="{{menu.price}}" id="edit_price" name="edit_price"></td>
+                <td><input type="number" value="{{menu.accumulate_mileage}}" id="edit_accumulate_mileage" name="edit_accumulate_mileage"></td>
+                <td><input type="number" value="{{menu.total_sale}}" id="edit_total_sale" name="edit_total_sale"></td>
+                <td><input type="text" value="{{menu.image}}" id="edit_image" name="edit_image"></td>
                 <td><input type="number" value="{{menu.likey}}" id="edit_likey" name="edit_likey"></td>
                 <td class="text-center"><button type="button" class="btn btn-secondary editbox_close">닫기</button></td>
                 <td class="text-center"><button type="button" class="btn btn-success Q_update">완료</button></td>
@@ -111,6 +115,7 @@
                     division: $(this).parents("td").siblings().find("#edit_division").val(),
                     name: $(this).parents("td").siblings().find("#edit_name").val(),
                     price: $(this).parents("td").siblings().find("#edit_price").val(),
+                    accumulate_mileage: $(this).parents("td").siblings().find("#edit_accumulate_mileage").val(),
                     total_sale: $(this).parents("td").siblings().find("#edit_total_sale").val(),
                     image: $(this).parents("td").siblings().find("#edit_image").val(),
                     likey: $(this).parents("td").siblings().find("#edit_likey").val(),

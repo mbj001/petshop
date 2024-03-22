@@ -23,6 +23,7 @@ const serverMenu = require("./routes/serverMenu");
 const clientMain = require("./routes/clientMain")
 const clientProduct = require("./routes/clientProduct");
 const client = require("./routes/client");
+const clientModal = require("./routes/clientModal")
 
 app.set("port", 8080);
 app.set("view engine", "html");

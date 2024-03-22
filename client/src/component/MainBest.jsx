@@ -26,7 +26,7 @@ function MainBest() {
             <MainBestComp>
                 {
                     mainBestData.map((item, index) => (
-                        <MenuCard key={item.menu_id} menu_id={item.menu_id} name={item.name} price={item.price} image={item.image} isCountSix={true} bestRank={index+1} isBest={true}/>
+                        <MenuCard key={item.menu_id} menu_id={item.menu_id} name={item.name} price={item.price} accumulate_mileage={item.accumulate_mileage} image={item.image} isCountSix={true} bestRank={index+1} isBest={true}/>
                     ))
                 }
             </MainBestComp>

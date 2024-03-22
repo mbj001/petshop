@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+// const {conn, pool} = require("../config/mysql_config");
 const conn = require("../config/mysql_config");
+const pool = require("../config/mysql_config");
 
 const { isLoggedIn, isNotLoggedIn } = require("../middleWares/index");
 const { login, logout } = require("../controller/auth");
@@ -134,86 +136,92 @@ router.post("/basketInfo", (req, res) => {
     return ;
 })
 
+
 // 결제 완료
-router.post("/purchase", (req, res) => {
-    console.log("router.post('/client/purchae')");
+router.post("/purchase", async (req, res) => {
+    console.log("router.post('/client/purchase')");
 
-    const order_list = req.body.order_list;
+    try{
+        let order_list = req.body.order_list;
 
-    let delete_basket_query = "delete from basket where ";
-    let insert_order_query = "insert into order_payment (user_id, menu_id, count, amount_price) values ";
-    let select_menu_query = "select menu_id, name, total_sale from menu where "
-    for(let i=0; i<order_list.length; i++){
-        delete_basket_query += "basket_id = " +order_list[i].basket_id;
-        insert_order_query += "('" + order_list[i].user_id + "', " + order_list[i].menu_id + ", " + order_list[i].count + ", " + order_list[i].total_price + ")";
-        select_menu_query += "menu_id = " + order_list[i].menu_id;
-        if(i !== order_list.length -1){
-            delete_basket_query += " or "
-            insert_order_query += ", "
-            select_menu_query += " or "
+        let accumulate_mileage = 0;
+        let delete_basket_query = "delete from basket where ";
+        let insert_order_query = "insert into order_payment (user_id, menu_id, count, amount_price) values ";
+        let select_menu_query = "select menu_id, name, total_sale from menu where "
+        
+        for(let i=0; i<order_list.length; i++){
+            console.log(order_list[i].accumulate_mileage);
+            accumulate_mileage += order_list[i].accumulate_mileage * order_list[i].count;
+            delete_basket_query += "basket_id = " +order_list[i].basket_id;
+            insert_order_query += "('" + order_list[i].user_id + "', " + order_list[i].menu_id + ", " + order_list[i].count + ", " + order_list[i].total_price + ")";
+            select_menu_query += "menu_id = " + order_list[i].menu_id;
+            if(i !== order_list.length -1){
+                delete_basket_query += " or "
+                insert_order_query += ", "
+                select_menu_query += " or "
+            }
         }
-    }
-
     
-    // basket 테이블 delete
-    conn.query(delete_basket_query, (err, delete_basket_result, fields) => {
-        if(err){
-            console.log(err);
+        // basket 테이블 delete
+        let [delete_basket_result] = await pool.promise().query(delete_basket_query);
+
+        // order_payment 테이블 insert
+        let [insert_order_result] = await pool.promise().query(insert_order_query);
+
+        // menu 테이블 total_sale 증가
+        let [select_menu_result] = await pool.promise().query(select_menu_query);
+
+        for(let i=0; i<order_list.length; i++){
+            for(let j=0; j<select_menu_result.length; j++){
+                if(order_list[i].menu_id === select_menu_result[j].menu_id){
+                    select_menu_result[j].total_sale += order_list[i].count;
+                    break;
+                }
+            }
+        }
+        let update_menu_query = "update menu set total_sale = CASE";
+        for(let i=0; i<select_menu_result.length; i++){
+            update_menu_query += " WHEN menu_id = " + select_menu_result[i].menu_id + " THEN " + select_menu_result[i].total_sale;
+        }
+        
+        update_menu_query += " END WHERE menu_id IN ("
+        for(let i=0; i<select_menu_result.length; i++){
+            update_menu_query += select_menu_result[i].menu_id;
+            if(i !== select_menu_result.length - 1){
+                update_menu_query += ", "
+            }
+        }
+        update_menu_query += ")";
+        let [update_menu_result] = await pool.promise().query(update_menu_query);
+
+        // 적립금
+        const insert_mileage_query = `insert into mileage_history (user_id, mileage_date, accumulate_mileage, description) values (?, now(), ?, "상품 구매")`;
+        let [insert_mileage_result] = await pool.promise().query(insert_mileage_query, [req.body.user_id, accumulate_mileage])
+
+        const select_client_query = `select available_mileage from client where ?`
+        let [select_client_result] = await pool.promise().query(select_client_query, [{user_id: req.body.user_id}]);
+
+        const update_client_query = `update client set available_mileage = ? where ?`;
+        let [update_client_result] = await pool.promise().query(update_client_query, [accumulate_mileage - req.body.use_mileage + select_client_result[0].available_mileage, {user_id: req.body.user_id}]);
+        
+        // 마일리지 사용
+        if(req.body.use_mileage !== 0){
+            const insert_mileage_query = `insert into mileage_history (user_id, mileage_date, use_mileage, description) values (?, now(), ?, ?)`;
+            let [insert_mileage_result] = await pool.promise().query(insert_mileage_query, [req.body.user_id, req.body.use_mileage, "상품 구매에 사용"]);
         }
         else{
-            // order_payment 테이블 insert
-            conn.query(insert_order_query, (err, insert_order_result, fields) => {
-                if(err){
-                    console.log(err);
-                }
-                else{
-                    // menu 테이블 total_sale 증가
-                    conn.query(select_menu_query, (err, select_menu_result, fields) => {
-                        if(err){
-                            console.log(err);
-                        }
-                        else{
-                            for(let i=0; i<order_list.length; i++){
-                                for(let j=0; j<select_menu_result.length; j++){
-                                    if(order_list[i].menu_id === select_menu_result[j].menu_id){
-                                        select_menu_result[j].total_sale += order_list[i].count;
-                                        break;
-                                    }
-                                }
-                            }
-                            let update_menu_query = "update menu set total_sale = CASE";
-                            for(let i=0; i<select_menu_result.length; i++){
-                                update_menu_query += " WHEN menu_id = " + select_menu_result[i].menu_id + " THEN " + select_menu_result[i].total_sale;
-                            }
-                            
-                            update_menu_query += " END WHERE menu_id IN ("
-                            for(let i=0; i<select_menu_result.length; i++){
-                                update_menu_query += select_menu_result[i].menu_id;
-                                if(i !== select_menu_result.length - 1){
-                                    update_menu_query += ", "
-                                }
-                            }
-                            update_menu_query += ")";
-    
-                            conn.query(update_menu_query, (err, update_menu_result, fields) => {
-                                if(err){
-                                    console.log(err);
-                                }
-                                else{
-                                    res.json(1);
-                                }
-                            })
-                        }
-                
-                    })
-                    
-                }
-            })
-
+            res.json(1);
         }
-    });
+        }
+    catch(err){
+        console.log(err);
+        res.json(0);
+    }
+
     return ;
+
 })
+
 
 router.post("/basketCount", (req, res) => {
     console.log("router.post('/client/basketCount')");
@@ -314,4 +322,35 @@ router.post("/checkid", (req, res) => {
         }
     })
 })
+
+// 마일리지
+router.post("/mileageInfo", (req, res) => {
+    console.log("router.post('/client/mileageInfo')");
+
+    const select_mileage_query = `select *, date_format(mileage_date, "%Y-%m-%d") as mileage_date_format from mileage_history where ?`;
+    conn.query(select_mileage_query, [{user_id: req.body.user_id}], (err, select_mileage_result, fields) => {
+        if(err){
+            console.log(err);
+            res.json(-1);
+        }
+        else{
+            res.send(select_mileage_result);
+        }
+    })
+})
+
+router.post("/availableMileage", (req, res) => {
+    console.log("router.post('/client/availableMileage')");
+
+    const select_client_query = `select available_mileage from client where ?`;
+    conn.query(select_client_query, [{user_id: req.body.user_id}], (err, select_client_result, fields) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.json(select_client_result[0].available_mileage);
+        }
+    })
+})
+
 module.exports = router;

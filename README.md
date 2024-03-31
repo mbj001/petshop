@@ -5,6 +5,7 @@
 cd client <br>
 npm install <br>
 npm start <br>
+(ID: root, PW: 1234)
 
 [server 실행] <br>
 cd server <br>

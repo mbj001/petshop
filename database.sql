@@ -31,7 +31,7 @@ CREATE TABLE `basket` (
   `count` int NOT NULL DEFAULT '1',
   `total_price` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`basket_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `basket` (
 
 LOCK TABLES `basket` WRITE;
 /*!40000 ALTER TABLE `basket` DISABLE KEYS */;
+INSERT INTO `basket` VALUES (67,'root1',115,1,6500),(71,'root',111,1,5500),(73,'root',29,1,13500),(74,'root',16,1,6900),(75,'root',70,1,7500);
 /*!40000 ALTER TABLE `basket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,14 +57,15 @@ CREATE TABLE `client` (
   `user_pw_confirm_number` int NOT NULL,
   `user_pw_confirm_answer` varchar(200) NOT NULL,
   `user_name` varchar(50) NOT NULL,
-  `user_address` varchar(200) NOT NULL,
+  `user_address_zone_code` varchar(30) NOT NULL,
+  `user_address_basic` varchar(100) DEFAULT NULL,
+  `user_address_detail` varchar(100) DEFAULT NULL,
   `user_phone` varchar(30) NOT NULL,
   `user_email` varchar(50) NOT NULL,
   `user_gender` varchar(10) DEFAULT NULL,
   `user_birth` datetime DEFAULT NULL,
   `user_pet_info` varchar(200) DEFAULT NULL,
-  `accumulate_point` int NOT NULL DEFAULT '0',
-  `used_point` int NOT NULL DEFAULT '0',
+  `available_mileage` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -74,7 +76,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES ('root','$2b$08$d1jI1Bk4qdg.VpzvdD3gZuhhrLY7Y8lkdUrqxCS/5vL52We/yxukK',5,'얼굴','민병준','','12341234','root@naver.com','male','1996-09-11 00:00:00','초롱이 19살',0,0);
+INSERT INTO `client` VALUES ('root','$2b$08$d1jI1Bk4qdg.VpzvdD3gZuhhrLY7Y8lkdUrqxCS/5vL52We/yxukK',5,'얼굴','민병준','','',NULL,'12341234','root@naver.com','male','1996-09-11 00:00:00','초롱이 19살',570),('root1','$2b$08$RJHO9ZMYGMhdkHRT393QAu3Lz6Sk5b3Cvz6.m.uM1Zy5BI.MV/FLK',2,'zz','민병준','10085','경기 김포시 김포한강1로 9 (장기동, 고창마을 반도유보라)','906-1204','63898753','mbj001@naver.com','male','1996-09-11 00:00:00','초롱이 19살 남자 개귀여움',1170);
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,6 +92,7 @@ CREATE TABLE `menu` (
   `division` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` int NOT NULL,
+  `accumulate_mileage` int NOT NULL,
   `total_sale` int NOT NULL DEFAULT '0',
   `image` varchar(100) DEFAULT NULL,
   `likey` int NOT NULL DEFAULT '0',
@@ -103,7 +106,7 @@ CREATE TABLE `menu` (
 
 LOCK TABLES `menu` WRITE;
 /*!40000 ALTER TABLE `menu` DISABLE KEYS */;
-INSERT INTO `menu` VALUES (1,'gum','오리목뼈 150g',6000,1,'menu01.jpg',10),(2,'gum','오리갈비껌 8p',9500,3,'menu02.jpg',14),(3,'gum','오독오독 닭발 껌 100g',5500,1,'menu03.jpg',0),(4,'gum','돼지귀 오리말이 80g',7500,14,'menu04.jpg',0),(5,'gum','소아킬레스 껌 80g (소힘줄)',12000,0,'menu05.jpg',0),(6,'cookie','소고기 빼빼로 4p',5900,16,'menu06.jpg',0),(7,'cookie','단호박 소간칩쿠키 70g',5500,0,'menu07.gif',52),(8,'cookie','롤리팝 쿠키 50g',4800,29,'menu08.jpg',0),(9,'cookie','닭고기 뼈다귀쿠키 70g',4900,2,'menu09.jpg',0),(10,'cookie','고구마 치즈스틱 70g',5500,0,'menu10.gif',0),(11,'feed','고구마 야채 연어사료 200g',4800,3,'menu11.jpg',0),(12,'feed','고구마 야채 연어사료 1kg/2kg/5kg',22000,113,'menu12.jpg',15),(13,'feed','필드게인 닭고기 200g',4000,0,'menu13.jpg',0),(14,'feed','필드게인 닭고기사료 1kg/3kg/5kg',18000,0,'menu14.jpg',0),(15,'feed','필드게인 오리고기 200g',4000,0,'menu15.jpg',0),(16,'snack','연어고구마 아채쳐키 100g',6900,0,'menu16.jpg',0),(17,'snack','북어채(황태) 50g',6800,0,'menu17.jpg',0),(18,'snack','콜라겐 무뼈닭발 50g',6500,11,'menu18.jpg',0),(19,'snack','제주 말고기육포 50g',6500,0,'menu19.jpg',0),(20,'snack','오리가슴살 쳐키 100g',9500,0,'menu20.jpg',0),(21,'softfood','닭고기 테린 3p',4500,0,'menu21.jpg',0),(22,'softfood','삼색 닭고기 테린 3p',4900,0,'menu22.jpg',0),(23,'softfood','오리고기 테린 3p',5900,0,'menu23.jpg',0),(24,'softfood','연어북어 테린 3p',5900,0,'menu24.jpg',34),(25,'softfood','소고기 테린 3p',5900,0,'menu25.jpg',0),(26,'bakery','강아지 생일 케이크 상차림 패키지',29900,0,'menu26.jpg',0),(27,'bakery','강아지 생일 보틀 케이크 (화이트)',13500,0,'menu27.jpg',0),(28,'bakery','강아지 생일 보틀 케이크 (옐로우)',13500,1,'menu28.jpg',0),(29,'bakery','강아지 생일 보틀케이크 (핑크)',13500,1,'menu29.jpg',0),(30,'bakery','오리구이 연어 치즈케이크 미니',12000,0,'menu30.jpg',0),(31,'feed','필드게인 오리고기사료 1kg/3kg/5kg',18000,0,'menu31.jpg',0),(32,'feed','필드게인 양고기 200g',4000,0,'menu32.jpg',0),(33,'feed','필드게인 양고기사료 1kg/3kg/5kg',18000,0,'menu33.jpg',0),(34,'feed','필드게인 소고기 200g',4000,0,'menu34.jpg',0),(35,'feed','필드게인 소고기사료 1kg/3kg/5kg',18000,0,'menu35.jpg',0),(36,'feed','필드게인 라이트 200g',4000,0,'menu36.jpg',0),(37,'feed','필드게인 라이트사료 1kg/3kg/5kg',18000,0,'menu37.jpg',0),(38,'feed','고구마 야채 연어사료 200g(스틱형)',4800,0,'menu38.jpg',0),(39,'feed','필드게인 야채 연어사료 1kg/3kg/5kg (스틱형)',22000,0,'menu39.jpg',11),(40,'feed','필드게인 닭고기 200g (스틱형)',4000,0,'menu40.jpg',0),(41,'feed','필드게인 닭고기사료 1kg/3kg/5kg (스틱형)',18000,0,'menu41.jpg',0),(42,'feed','필드게인 오리고기 200g (스틱형)',4000,0,'menu42.jpg',0),(43,'feed','필드게인 오리고기사료 1kg/3kg/5kg (스틱형)',18000,0,'menu43.jpg',0),(44,'feed','필드게인 양고기사료 200g (스틱형)',4500,0,'menu44.jpg',0),(45,'feed','필드게인 양고기사료 1kg/3kg/5kg (스틱형)',18000,0,'menu45.jpg',0),(46,'feed','필드게인 소고기 200g (스틱형)',4000,0,'menu46.jpg',53),(47,'feed','필드게인 소고기사료 1kg/3kg/5kg (스틱형)',18000,0,'menu47.jpg',0),(48,'feed','필드게인 라이트 200g (스틱형)',4000,0,'menu48.jpg',0),(49,'feed','필드게인 라이트사료 1kg/3kg/5kg (스틱형)',18000,0,'menu49.jpg',0),(50,'snack','사사미 쳐키 100g/200g',6500,74,'menu50.jpg',0),(51,'snack','닭모래집(근위) 쳐키 80g',6500,0,'menu51.jpg',0),(52,'snack','소식도근 육포 50g',7500,0,'menu52.jpg',0),(53,'snack','오리 고구마치즈칩 50g',6900,0,'menu53.jpg',0),(54,'snack','소고기 고구마치즈칩 50g',7900,0,'menu54.jpg',0),(55,'snack','고구마 닭가슴살말이 100g',5900,0,'menu55.jpg',0),(56,'snack','고구마 오리말이 100g',6900,0,'menu56.jpg',65),(57,'snack','고구마 냠냠 100g',5500,0,'menu57.jpg',0),(58,'snack','단호박 닭가슴살 말이 100g',6900,0,'menu58.jpg',0),(59,'snack','쫄깃 닭가슴살 100g',6500,0,'menu59.jpg',0),(60,'snack','쫄깃 오리가슴살 100g',8500,0,'menu60.jpg',0),(61,'snack','말랑 포크쳐키 100g',5900,0,'menu61.jpg',0),(62,'snack','콜라겐 무뼈닭발 50g',6500,0,'menu62.jpg',0),(63,'gum','닭갈비 껌 10p',9500,0,'menu63.gif',0),(64,'gum','오리연골 50g',5500,0,'menu64.jpg',0),(65,'gum','닭고기 오돌뼈(연골) 40g',4900,0,'menu65.jpg',0),(66,'gum','돼지귀 슬라이스 80g',5900,0,'menu66.jpg',0),(67,'gum','왕 돼지 껌 2p / 5p',4000,0,'menu67.jpg',0),(68,'gum','오리날개 6p',5000,0,'menu68.jpg',0),(69,'gum','송아지목뼈 100g',6900,0,'menu69.jpg',0),(70,'gum','캥거루꼬리 100g',7500,0,'menu70.jpg',0),(71,'gum','우족 2p / 미니우족 4p',5500,0,'menu71.jpg',0),(72,'gum','소떡심 껌 80g',6800,0,'menu73.jpg',0),(73,'gum','삼각 돼지귀 80g',4900,12,'menu74.jpg',0),(74,'snack','한우우피 봉봉(소) 50g( 4p )',5900,0,'menu75.jpg',0),(75,'softfood','부드러운 닭가슴살구이 100g',4900,0,'menu76.gif',0),(76,'softfoof','오리가슴살 구이 100g',6900,0,'menu77.jpg',13),(77,'softfood','닭모래집 구이 100g',5900,0,'menu78.jpg',0),(78,'softfood','소고기 육포 50g',7500,0,'menu79.jpg',0),(79,'softfood','소염통 구이 100g',6500,0,'menu80.jpg',0),(80,'softfood','쫀득 연어큐브 50g',6000,0,'menu81.jpg',0),(81,'softfood','북어고구마 야채스틱 50g',7500,0,'menu82.jpg',0),(82,'softfood','동결건조 닭가슴살 50g',6900,0,'menu83.jpg',0),(83,'softfood','동결건조 오리가슴살 50g',9500,0,'menu84.jpg',0),(84,'cookie','연어 당근 쿠키 50g',4800,0,'menu85.jpg',0),(85,'cookie','칼슘듬뿍 멸치쿠키 50g',4800,0,'menu86.jpg',0),(86,'cookie','소간 미니 쿠키 50g',4800,0,'menu87.jpg',0),(87,'cookie','산양유 오트밀쿠키 50g',4800,0,'menu88.jpg',0),(88,'cookie','캐롭 코코넛쿠키 50g',4800,0,'menu89.jpg',0),(89,'bakery','오리구이 연어 치즈케이크 1호',15900,332,'menu90.jpg',0),(90,'bakery','닭고기 단호박케이크',13500,0,'menu91.jpg',0),(91,'bakery','오리야채 고구마크림 케이크',25900,0,'menu92.jpg',0),(92,'bakery','강아지 멜팅 도넛 2p',6900,0,'menu93.jpg',0),(93,'bakery','연어 소세지빵 3p',5900,0,'menu94.jpg',0),(94,'bakery','소고기 댕버거',5900,0,'menu95.jpg',0),(95,'bakery','강아지 치킨',6500,0,'menu96.jpg',44),(96,'bakery','강아지 치즈붕어빵 3p',5500,0,'menu97.jpg',0),(97,'deco','숫자양초(0~9)',800,0,'menu98.jpg',0),(98,'deco','빨간하트초',800,0,'menu99.jpg',0),(99,'deco','핑크하트초 1p',800,0,'menu100.jpg',0),(100,'deco','미니 핑크하트초 1p (색상랜덤)',600,0,'menu101.jpg',0),(101,'deco','데이지초 1p',800,0,'menu102.jpg',0),(102,'deco','미니 스마일초 1p (색상랜덤)',600,0,'menu103.jpg',0),(103,'deco','스마일초 1p',800,0,'menu104.jpg',0),(104,'deco','강아지 생일파티 미니 고깔모지 1p',6000,0,'menu105.jpg',0),(105,'deco','별 고깔모자(핑크/블루)',1800,0,'menu106.jpg',0),(106,'deco','데이지 가랜드',3000,0,'menu107.jpg',0),(107,'deco','캘리그래피 가랜드',4000,0,'menu108.jpg',0),(108,'powder','닭고기 파우더 50g',4500,0,'menu109.jpg',0),(109,'powder','오리고기 파우더 50g',6500,0,'menu110.jpg',0),(110,'powder','북어 파우더 50g',7500,0,'menu111.jpg',0),(111,'powder','칼숨멸치 파우더 50g',5500,0,'menu112.jpg',0),(112,'powder','소간 파우더 100g',5500,0,'menu113.jpg',0),(113,'powder','동결건조 닭가슴살 파우더 50g',6500,0,'menu114.jpg',0),(114,'powder','동결건조 오리가슴살 파우더 50g',8500,0,'menu115.jpg',0),(115,'powder','연어파우더 50g',6500,0,'menu116.jpg',0),(116,'powder','소지라(철분) 파우더 50g',4000,0,'menu117.jpg',0),(117,'premium','[강아지유산균]이너펫 프로바이오틱스 30포',25900,0,'menu118.jpg',0);
+INSERT INTO `menu` VALUES (1,'gum','오리목뼈 150g',6000,120,1,'menu01.jpg',10),(2,'gum','오리갈비껌 8p',9500,190,8,'menu02.jpg',14),(3,'gum','오독오독 닭발 껌 100g',5500,110,10,'menu03.jpg',0),(4,'gum','돼지귀 오리말이 80g',7500,150,14,'menu04.jpg',0),(5,'gum','소아킬레스 껌 80g (소힘줄)',12000,240,0,'menu05.jpg',0),(6,'cookie','소고기 빼빼로 4p',5900,118,16,'menu06.jpg',0),(7,'cookie','단호박 소간칩쿠키 70g',5500,110,0,'menu07.gif',52),(8,'cookie','롤리팝 쿠키 50g',4800,96,41,'menu08.jpg',0),(9,'cookie','닭고기 뼈다귀쿠키 70g',4900,98,6,'menu09.jpg',0),(10,'cookie','고구마 치즈스틱 70g',5500,110,0,'menu10.gif',0),(11,'feed','고구마 야채 연어사료 200g',4800,96,3,'menu11.jpg',0),(12,'feed','고구마 야채 연어사료 1kg/2kg/5kg',22000,440,113,'menu12.jpg',15),(13,'feed','필드게인 닭고기 200g',4000,80,0,'menu13.jpg',0),(14,'feed','필드게인 닭고기사료 1kg/3kg/5kg',18000,360,0,'menu14.jpg',0),(15,'feed','필드게인 오리고기 200g',4000,80,0,'menu15.jpg',0),(16,'snack','연어고구마 아채쳐키 100g',6900,138,12,'menu16.jpg',0),(17,'snack','북어채(황태) 50g',6800,136,1,'menu17.jpg',0),(18,'snack','콜라겐 무뼈닭발 50g',6500,130,11,'menu18.jpg',0),(19,'snack','제주 말고기육포 50g',6500,130,0,'menu19.jpg',0),(20,'snack','오리가슴살 쳐키 100g',9500,190,0,'menu20.jpg',0),(21,'softfood','닭고기 테린 3p',4500,90,0,'menu21.jpg',0),(22,'softfood','삼색 닭고기 테린 3p',4900,98,2,'menu22.jpg',0),(23,'softfood','오리고기 테린 3p',5900,118,11,'menu23.jpg',0),(24,'softfood','연어북어 테린 3p',5900,118,1,'menu24.jpg',34),(25,'softfood','소고기 테린 3p',5900,118,0,'menu25.jpg',0),(26,'bakery','강아지 생일 케이크 상차림 패키지',29900,598,0,'menu26.jpg',0),(27,'bakery','강아지 생일 보틀 케이크 (화이트)',13500,270,2,'menu27.jpg',0),(28,'bakery','강아지 생일 보틀 케이크 (옐로우)',13500,270,34,'menu28.jpg',0),(29,'bakery','강아지 생일 보틀케이크 (핑크)',13500,270,8,'menu29.jpg',0),(30,'bakery','오리구이 연어 치즈케이크 미니',12000,240,0,'menu30.jpg',0),(31,'feed','필드게인 오리고기사료 1kg/3kg/5kg',18000,360,0,'menu31.jpg',0),(32,'feed','필드게인 양고기 200g',4000,80,0,'menu32.jpg',0),(33,'feed','필드게인 양고기사료 1kg/3kg/5kg',18000,360,0,'menu33.jpg',0),(34,'feed','필드게인 소고기 200g',4000,80,0,'menu34.jpg',0),(35,'feed','필드게인 소고기사료 1kg/3kg/5kg',18000,360,0,'menu35.jpg',0),(36,'feed','필드게인 라이트 200g',4000,80,0,'menu36.jpg',0),(37,'feed','필드게인 라이트사료 1kg/3kg/5kg',18000,360,0,'menu37.jpg',0),(38,'feed','고구마 야채 연어사료 200g(스틱형)',4800,96,0,'menu38.jpg',0),(39,'feed','필드게인 야채 연어사료 1kg/3kg/5kg (스틱형)',22000,440,0,'menu39.jpg',11),(40,'feed','필드게인 닭고기 200g (스틱형)',4000,80,0,'menu40.jpg',0),(41,'feed','필드게인 닭고기사료 1kg/3kg/5kg (스틱형)',18000,360,0,'menu41.jpg',0),(42,'feed','필드게인 오리고기 200g (스틱형)',4000,80,0,'menu42.jpg',0),(43,'feed','필드게인 오리고기사료 1kg/3kg/5kg (스틱형)',18000,360,0,'menu43.jpg',0),(44,'feed','필드게인 양고기사료 200g (스틱형)',4500,90,0,'menu44.jpg',0),(45,'feed','필드게인 양고기사료 1kg/3kg/5kg (스틱형)',18000,360,0,'menu45.jpg',0),(46,'feed','필드게인 소고기 200g (스틱형)',4000,80,0,'menu46.jpg',53),(47,'feed','필드게인 소고기사료 1kg/3kg/5kg (스틱형)',18000,360,0,'menu47.jpg',0),(48,'feed','필드게인 라이트 200g (스틱형)',4000,80,0,'menu48.jpg',0),(49,'feed','필드게인 라이트사료 1kg/3kg/5kg (스틱형)',18000,360,0,'menu49.jpg',0),(50,'snack','사사미 쳐키 100g/200g',6500,130,76,'menu50.jpg',0),(51,'snack','닭모래집(근위) 쳐키 80g',6500,130,0,'menu51.jpg',0),(52,'snack','소식도근 육포 50g',7500,150,0,'menu52.jpg',0),(53,'snack','오리 고구마치즈칩 50g',6900,138,0,'menu53.jpg',0),(54,'snack','소고기 고구마치즈칩 50g',7900,158,0,'menu54.jpg',0),(55,'snack','고구마 닭가슴살말이 100g',5900,118,0,'menu55.jpg',0),(56,'snack','고구마 오리말이 100g',6900,138,0,'menu56.jpg',65),(57,'snack','고구마 냠냠 100g',5500,110,0,'menu57.jpg',0),(58,'snack','단호박 닭가슴살 말이 100g',6900,138,0,'menu58.jpg',0),(59,'snack','쫄깃 닭가슴살 100g',6500,130,0,'menu59.jpg',0),(60,'snack','쫄깃 오리가슴살 100g',8500,170,0,'menu60.jpg',0),(61,'snack','말랑 포크쳐키 100g',5900,118,0,'menu61.jpg',0),(62,'snack','콜라겐 무뼈닭발 50g',6500,130,0,'menu62.jpg',0),(63,'gum','닭갈비 껌 10p',9500,190,0,'menu63.gif',0),(64,'gum','오리연골 50g',5500,110,0,'menu64.jpg',0),(65,'gum','닭고기 오돌뼈(연골) 40g',4900,98,0,'menu65.jpg',0),(66,'gum','돼지귀 슬라이스 80g',5900,118,1,'menu66.jpg',0),(67,'gum','왕 돼지 껌 2p / 5p',4000,80,0,'menu67.jpg',0),(68,'gum','오리날개 6p',5000,100,0,'menu68.jpg',0),(69,'gum','송아지목뼈 100g',6900,138,0,'menu69.jpg',0),(70,'gum','캥거루꼬리 100g',7500,150,0,'menu70.jpg',0),(71,'gum','우족 2p / 미니우족 4p',5500,110,0,'menu71.jpg',0),(72,'gum','소떡심 껌 80g',6800,136,0,'menu73.jpg',0),(73,'gum','삼각 돼지귀 80g',4900,98,12,'menu74.jpg',0),(74,'snack','한우우피 봉봉(소) 50g( 4p )',5900,118,0,'menu75.jpg',0),(75,'softfood','부드러운 닭가슴살구이 100g',4900,98,0,'menu76.gif',0),(76,'softfoof','오리가슴살 구이 100g',6900,138,0,'menu77.jpg',13),(77,'softfood','닭모래집 구이 100g',5900,118,0,'menu78.jpg',0),(78,'softfood','소고기 육포 50g',7500,150,0,'menu79.jpg',0),(79,'softfood','소염통 구이 100g',6500,130,0,'menu80.jpg',0),(80,'softfood','쫀득 연어큐브 50g',6000,120,0,'menu81.jpg',0),(81,'softfood','북어고구마 야채스틱 50g',7500,150,0,'menu82.jpg',0),(82,'softfood','동결건조 닭가슴살 50g',6900,138,0,'menu83.jpg',0),(83,'softfood','동결건조 오리가슴살 50g',9500,190,0,'menu84.jpg',0),(84,'cookie','연어 당근 쿠키 50g',4800,96,0,'menu85.jpg',0),(85,'cookie','칼슘듬뿍 멸치쿠키 50g',4800,96,0,'menu86.jpg',0),(86,'cookie','소간 미니 쿠키 50g',4800,96,1,'menu87.jpg',0),(87,'cookie','산양유 오트밀쿠키 50g',4800,96,0,'menu88.jpg',0),(88,'cookie','캐롭 코코넛쿠키 50g',4800,96,0,'menu89.jpg',0),(89,'bakery','오리구이 연어 치즈케이크 1호',15900,318,332,'menu90.jpg',0),(90,'bakery','닭고기 단호박케이크',13500,270,0,'menu91.jpg',0),(91,'bakery','오리야채 고구마크림 케이크',25900,518,0,'menu92.jpg',0),(92,'bakery','강아지 멜팅 도넛 2p',6900,138,0,'menu93.jpg',0),(93,'bakery','연어 소세지빵 3p',5900,118,0,'menu94.jpg',0),(94,'bakery','소고기 댕버거',5900,118,0,'menu95.jpg',0),(95,'bakery','강아지 치킨',6500,130,0,'menu96.jpg',44),(96,'bakery','강아지 치즈붕어빵 3p',5500,110,0,'menu97.jpg',0),(97,'deco','숫자양초(0~9)',800,16,0,'menu98.jpg',0),(98,'deco','빨간하트초',800,16,0,'menu99.jpg',0),(99,'deco','핑크하트초 1p',800,16,0,'menu100.jpg',0),(100,'deco','미니 핑크하트초 1p (색상랜덤)',600,12,0,'menu101.jpg',0),(101,'deco','데이지초 1p',800,16,0,'menu102.jpg',0),(102,'deco','미니 스마일초 1p (색상랜덤)',600,12,0,'menu103.jpg',0),(103,'deco','스마일초 1p',800,16,0,'menu104.jpg',0),(104,'deco','강아지 생일파티 미니 고깔모지 1p',6000,120,0,'menu105.jpg',0),(105,'deco','별 고깔모자(핑크/블루)',1800,36,0,'menu106.jpg',0),(106,'deco','데이지 가랜드',3000,60,0,'menu107.jpg',0),(107,'deco','캘리그래피 가랜드',4000,80,0,'menu108.jpg',0),(108,'powder','닭고기 파우더 50g',4500,90,0,'menu109.jpg',0),(109,'powder','오리고기 파우더 50g',6500,130,1,'menu110.jpg',0),(110,'powder','북어 파우더 50g',7500,150,2,'menu111.jpg',0),(111,'powder','칼숨멸치 파우더 50g',5500,110,8,'menu112.jpg',0),(112,'powder','소간 파우더 100g',5500,110,6,'menu113.jpg',0),(113,'powder','동결건조 닭가슴살 파우더 50g',6500,130,0,'menu114.jpg',0),(114,'powder','동결건조 오리가슴살 파우더 50g',8500,170,0,'menu115.jpg',0),(115,'powder','연어파우더 50g',6500,130,0,'menu116.jpg',0),(116,'powder','소지라(철분) 파우더 50g',4000,80,0,'menu117.jpg',0),(117,'premium','[강아지유산균]이너펫 프로바이오틱스 30포',25900,518,1,'menu118.jpg',0);
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,6 +137,34 @@ INSERT INTO `menu_detail` VALUES (1,1,1,'menu_detail001.jpg'),(2,1,2,'menu_detai
 UNLOCK TABLES;
 
 --
+-- Table structure for table `mileage_history`
+--
+
+DROP TABLE IF EXISTS `mileage_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mileage_history` (
+  `mileage_history_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(40) NOT NULL,
+  `mileage_date` date NOT NULL,
+  `accumulate_mileage` int NOT NULL DEFAULT '0',
+  `use_mileage` int NOT NULL DEFAULT '0',
+  `description` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`mileage_history_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mileage_history`
+--
+
+LOCK TABLES `mileage_history` WRITE;
+/*!40000 ALTER TABLE `mileage_history` DISABLE KEYS */;
+INSERT INTO `mileage_history` VALUES (1,'root1','2024-03-22',518,0,'상품 구매'),(2,'root1','2024-03-22',270,0,'상품 구매'),(3,'root1','2024-03-22',118,0,'상품 구매'),(4,'root1','2024-03-22',98,0,'상품 구매'),(5,'root1','2024-03-22',0,500,'상품 구매에 사용'),(6,'root1','2024-03-22',118,0,'상품 구매'),(7,'root1','2024-03-22',110,0,'상품 구매'),(8,'root1','2024-03-22',0,111,'상품 구매에 사용'),(9,'root1','2024-03-22',110,0,'상품 구매'),(10,'root1','2024-03-22',0,111,'상품 구매에 사용'),(11,'root1','2024-03-23',550,0,'상품 구매'),(12,'root','2024-03-26',380,0,'상품 구매'),(13,'root','2024-03-26',190,0,'상품 구매');
+/*!40000 ALTER TABLE `mileage_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `order_payment`
 --
 
@@ -148,7 +179,7 @@ CREATE TABLE `order_payment` (
   `amount_price` int NOT NULL,
   `delivery_complete` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,6 +188,7 @@ CREATE TABLE `order_payment` (
 
 LOCK TABLES `order_payment` WRITE;
 /*!40000 ALTER TABLE `order_payment` DISABLE KEYS */;
+INSERT INTO `order_payment` VALUES (1,'root1',66,1,5900,0),(2,'root1',24,1,5900,0),(3,'root1',8,1,4800,0),(4,'root1',8,1,4800,0),(5,'root1',2,1,9500,0),(6,'root1',2,1,9500,0),(7,'root1',27,1,13500,0),(8,'root1',27,1,13500,0),(9,'root1',109,1,6500,0),(10,'root1',16,1,6900,0),(11,'root1',16,1,6900,0),(12,'root1',16,1,6900,0),(13,'root1',16,1,6900,0),(14,'root1',16,1,6900,0),(15,'root1',2,1,9500,0),(16,'root1',8,1,4800,0),(17,'root1',17,1,6800,0),(18,'root1',28,1,13500,0),(19,'root1',23,1,5900,0),(20,'root1',23,1,5900,0),(21,'root1',23,1,5900,0),(22,'root1',111,1,5500,0),(23,'root1',29,1,13500,0),(24,'root1',29,1,13500,0),(25,'root1',28,1,13500,0),(26,'root1',3,5,27500,0),(27,'root1',28,12,162000,0),(28,'root1',28,18,243000,0),(29,'root1',29,1,13500,0),(30,'root1',8,1,4800,0),(31,'root1',110,1,7500,0),(32,'root1',110,1,7500,0),(33,'root1',8,1,4800,0),(34,'root1',8,1,4800,0),(35,'root1',8,1,4800,0),(36,'root1',50,1,6500,0),(37,'root1',3,1,5500,0),(38,'root1',3,1,5500,0),(39,'root1',8,1,4800,0),(40,'root1',8,1,4800,0),(41,'root1',117,1,25900,0),(42,'root1',28,1,13500,0),(43,'root1',23,1,5900,0),(44,'root1',22,1,4900,0),(45,'root1',23,1,5900,0),(46,'root1',112,1,5500,0),(47,'root1',112,1,5500,0),(48,'root1',111,5,27500,0),(49,'root',111,1,5500,0),(50,'root',29,1,13500,0),(51,'root',2,1,9500,0);
 /*!40000 ALTER TABLE `order_payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,6 +213,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+INSERT INTO `sessions` VALUES ('PTxh_o2wPKeRWhrUTjg2CjoXnULDh6QA',1711467235,'{\"cookie\":{\"originalMaxAge\":7200000,\"expires\":\"2024-03-26T15:33:55.104Z\",\"secure\":false,\"httpOnly\":false,\"path\":\"/\"},\"passport\":{\"user\":\"root\"}}');
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,7 +229,7 @@ CREATE TABLE `wishlist` (
   `user_id` varchar(40) NOT NULL,
   `menu_id` int NOT NULL,
   PRIMARY KEY (`wishlist_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,6 +238,7 @@ CREATE TABLE `wishlist` (
 
 LOCK TABLES `wishlist` WRITE;
 /*!40000 ALTER TABLE `wishlist` DISABLE KEYS */;
+INSERT INTO `wishlist` VALUES (1,'root',23),(2,'root',29),(3,'root',17),(4,'root',13),(5,'root',4),(6,'root',18),(7,'root',8),(8,'root',86),(12,'root',8);
 /*!40000 ALTER TABLE `wishlist` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -217,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-19 23:29:27
+-- Dump completed on 2024-03-31 12:47:30

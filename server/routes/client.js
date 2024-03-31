@@ -212,7 +212,7 @@ router.post("/purchase", async (req, res) => {
         else{
             res.json(1);
         }
-        }
+    }
     catch(err){
         console.log(err);
         res.json(0);
